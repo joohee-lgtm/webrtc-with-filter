@@ -5,10 +5,10 @@
         <meta http-equiv="content-language" content="en-EN" />
     </head>
     <body>
-        <a href="/text">text</a>
-        <a href="/caman">caman</a>
-        <a href="/glsl">glsl</a>
-        <a href="/gif">gif</a>  
-        <a href="/faceFilter">faceFiler</a>
+        <ul>
+            <% htmlWebpackPlugin.options.demos.forEach(function(demo){ %>
+                <li><a href="/<%= demo %>"><%= demo %></a> </li>
+            <% }); %>
+        </ul>
     </body>
 </html>

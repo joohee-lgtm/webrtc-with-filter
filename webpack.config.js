@@ -2,18 +2,14 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebpackCleanupPlugin = require("webpack-cleanup-plugin");
 const path = require("path");
-const util = require('util');
-const glob = util.promisify(require('glob'));
+const fs = require('fs');
 
+// const util = require('util');
+// const glob = util.promisify(require('glob'));
 
 const config = {
   entry: {
     app: ['./src/index.js'],
-    "faceFilter/index": ['./src/demos/faceFilter/faceFilter.js'],
-    "gif/index": ['./src/demos/gif/gif.js'],
-    "text/index": ['./src/demos/text/text.js'],
-    "caman/index": ['./src/demos/caman/caman.js'],
-    "glsl/index": ['./src/demos/glsl/glsl.js']
   },
   output: {
     filename: '[name].js',
@@ -66,38 +62,62 @@ const config = {
     new MiniCssExtractPlugin({
       filename: "[name].css",
       chunkFilename: "[id].css"
-    }),
-    new HtmlWebPackPlugin({
-      inject: false,
-      template: "./src/index.html",
-      filename: "./index.html"
-    }),
-    new HtmlWebPackPlugin({
-      inject: false,
-      template: "./src/demos/faceFilter/faceFilter.html",
-      filename: "./faceFilter/index.html"
-    }),
-    new HtmlWebPackPlugin({
-      inject: false,
-      template: "./src/demos/gif/gif.html",
-      filename: "./gif/index.html"
-    }),
-    new HtmlWebPackPlugin({
-      inject: false,
-      template: "./src/demos/text/text.html",
-      filename: "./text/index.html"
-    }),
-    new HtmlWebPackPlugin({
-      inject: false,
-      template: "./src/demos/caman/caman.html",
-      filename: "./caman/index.html"
-    }),
-    new HtmlWebPackPlugin({
-      inject: false,
-      template: "./src/demos/glsl/glsl.html",
-      filename: "./glsl/index.html"
-    }),
+    })
   ]
 };
 
-module.exports = config;
+async function getDemos() {
+  return new Promise(function(resolve) {
+    const demos = [];
+
+    fs.readdirSync("./src/demos").forEach(file => {
+      demos.push(file);
+    })
+    resolve(demos);
+  });
+}
+
+async function injectConfig() {
+  const targets = await getDemos();
+  const entries = {};
+  const plugins = [
+    new HtmlWebPackPlugin({
+      inject: false,
+      scripts: [
+        {
+          src: '/app.js',
+          type: 'module'
+        }
+      ],
+      demos: targets,
+      template: "./src/index.html",
+      filename: "./index.html"
+    })
+  ];
+
+  targets.forEach(function(dir){
+    entries[`${dir}/index`] = [`./src/demos/${dir}/${dir}.js`]
+    plugins.push(
+      new HtmlWebPackPlugin({
+        inject: false,
+        template: `./src/demos/${dir}/${dir}.html`,
+        filename: `./${dir}/index.html`
+      })  
+    );
+  });
+
+  config.entry = {
+    ...config.entry,
+    ...entries
+  };
+  config.plugins = config.plugins.concat(plugins);
+
+  console.log(targets);
+}
+
+module.exports = () => {
+  return new Promise(async (resolve, reject) => {
+    await injectConfig();
+    resolve(config);
+  });
+};
