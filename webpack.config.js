@@ -21,6 +21,8 @@ const config = {
     contentBase: path.join(__dirname, './dist'),
     historyApiFallback: true
   },
+  cache: false,
+  watch: true,
   module: {
     rules: [
       {
