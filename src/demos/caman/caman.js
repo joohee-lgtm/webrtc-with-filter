@@ -3,15 +3,10 @@ ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
 
 const video = document.getElementById('video');
-// const buffer = document.createElement('canvas');
-const access = document.getElementById('access');
 const wrapper = document.getElementById('wrapper');
 const buffer = document.getElementById('buffer');
 const output = document.getElementById('output');
 const fps = 60;
-
-access.addEventListener('click', init);
-video.addEventListener('canplay', framerate);
 
 function init() {
   window.navigator.mediaDevices.getUserMedia({
@@ -22,14 +17,16 @@ function init() {
   })
   .then(stream => {
     window.devicePixelRatio = 1;
-    wrapper.style.display = 'block';
-    access.style.display = 'none';
     video.srcObject = stream;
     video.play();
-    access.removeEventListener('click', init);
-    access.addEventListener('click', render);
   })
-  .catch(err => console.log('There was an error 😱', err));
+  .catch(err => {
+    if(err.code === 0) {
+      document.getElementById('loading').style.display = "none";
+      document.getElementById('permission').style.display = "block";
+    }
+    console.log('There was an error 😱', err)
+  });
 }
 
 function framerate() {
@@ -63,3 +60,9 @@ function render() {
   outputContext.drawImage(buffer,0,0);
 }
 
+document.addEventListener("DOMContentLoaded", init);
+video.addEventListener('canplay', function(){
+  document.getElementById('loading').style.display = "none";
+  document.getElementById('content').style.display = "block";
+  framerate(); 
+});

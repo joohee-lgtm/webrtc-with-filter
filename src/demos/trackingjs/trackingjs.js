@@ -56,12 +56,16 @@ window.plot = function(x, y, w, h) {
     rect.style.left = (img.offsetLeft + x) + 'px';
     rect.style.top = (img.offsetTop + y) + 'px';
 };
-
+  
 window.onload = function() {
     // init();
     var video = document.getElementById('video');
     var canvas = document.getElementById('canvas');
-
+    video.addEventListener('canplay', function() {
+        document.querySelector("#loading").style.display = "none";
+        document.querySelector("#content").style.display = "block";
+      });
+    
     var context = canvas.getContext('2d');
     var tracker = new tracking.ObjectTracker(['face', 'eye', 'mouth']);
     // var tracker = new tracking.ObjectTracker('eye');

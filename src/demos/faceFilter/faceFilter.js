@@ -52,6 +52,9 @@ function init_faceFilter(videoSettings){
             return;
           }
 
+          document.getElementById('loading').style.display = "none";
+          document.getElementById('content').style.display = "block";          
+
           console.log('INFO : JEEFACEFILTERAPI IS READY');
           init_threeScene(spec);
         }, //end callbackReady()

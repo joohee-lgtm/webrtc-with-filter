@@ -2,7 +2,7 @@
 ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
 
-const video = document.getElementById('video');
+const video = document.createElement('video');
 const buffer = document.createElement('canvas');
 const canvas = document.getElementById('canvas');
 let bufferFilter = '';
@@ -20,9 +20,6 @@ function init() {
 }
 
 function setup(stream) {
-  canvas.style.display = 'block';
-  document.getElementById('access').style.display = 'none';  
-  document.getElementById('inputs').style.display = 'block';  
   video.srcObject = stream;
   video.play();
 
@@ -87,8 +84,12 @@ function textSubmit() {
   }
  }
 
-document.getElementById('access').addEventListener('click', init);
-video.addEventListener('canplay', render);
+document.addEventListener("DOMContentLoaded", init);
+video.addEventListener('canplay', function(){
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("content").style.display = "block";
+  render();
+});
 [...document.getElementById('inputs').querySelectorAll('button')].forEach(button => {
   button.addEventListener('click', toggle);
 });

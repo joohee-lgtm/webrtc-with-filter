@@ -21,10 +21,10 @@ function init() {
 
 function setup(stream) {
   canvas.style.display = 'block';
-  document.getElementById('access').style.display = 'none';  
+
   video.srcObject = stream;
   video.play();
-    
+
   window.devicePixelRatio = 1;
   
   gifler(picka.src).frames('canvas#icon', function(iconContext, frame){
@@ -60,6 +60,11 @@ function render() {
 };
 
 document.addEventListener("DOMContentLoaded", function(){
-  document.getElementById('access').addEventListener('click', init);
-  video.addEventListener('canplay', render);
+  init();
+  video.addEventListener('canplay', function(){
+    document.getElementById('loading').style.display = 'none';  
+    document.getElementById('content').style.display = 'block';  
+
+    render();
+  });
 });

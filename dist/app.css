@@ -1,59 +1,16 @@
-main {
-    align-items: center;
-    display: flex;
-    height: 100vh;
-    justify-content: center;
-    width: 100vw;
-  }
-  
-  #canvas,
-  #video,
-  #buttons { 
-    display: none; 
-  }
-  
-  button {
-    color: #558;
-    cursor: pointer;
-    border: 0.3em solid #558;
-    font-weight: bold;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.35em 1em;
-    transition: 0.2s;
-  }
-  
-  button:hover,
-  button:active {
-    background: #558;
-    box-shadow: 0 0 3px #000;
-    color: #fff;
-  }
-  
-  #canvas,
-  #buttons {
-    float: left;
-  }
-  
-  #buttons {
-    max-width: 400px;
-  }
-  
-  #buttons button {
-    display: block;
-    margin: 10px 0 0 10px;
-    text-align: center;
-    width: 200px;
-  }
-  
-  #access {
-    display: block;
-    font-size: 1.5em;
-  }
-  
-  canvas {
-    height: auto;
-  }
+video, canvas {
+  border: 1px solid #98DAC6; 
+}
+
+#content, #permission {
+  display: none;
+}
+
+.loading p {
+  display: table-cell;
+  height: 64px;
+  vertical-align: middle;
+}
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
 /* Document

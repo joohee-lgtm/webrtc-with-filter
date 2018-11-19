@@ -19,8 +19,6 @@ function init() {
 function setup(stream) {
   
   canvas.style.display = 'block';
-  document.getElementById('access').style.display = 'none';
-  document.getElementById('buttons').style.display = 'block';
   
   video.srcObject = stream;
   video.play();
@@ -71,11 +69,19 @@ function update() {
 
 function toggle() {
   fragColor = this.getAttribute('data-shader');
+  text = this.innerText;
+  document.querySelector('.filter_name').innerText = `filter : ${text}`;
   update();
 }
 
-document.getElementById('access').addEventListener('click', init);
-video.addEventListener('canplay', render);
+document.addEventListener("DOMContentLoaded", function() {
+  init();
+});
+video.addEventListener('canplay', function(){
+  document.getElementById('loading').style.display = "none";
+  document.getElementById('content').style.display = "block";
+  render();
+});
 
 [...document.getElementById('buttons').children].forEach(button => {
   button.addEventListener('click', toggle);
