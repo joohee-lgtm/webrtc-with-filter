@@ -1,11 +1,13 @@
 /*
 ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
+import dat from "dat.gui";
 
 const save = document.getElementById('save');
 const video = document.getElementById('video');
 const buffer = document.createElement('canvas');
 const output = document.getElementById('canvas');
+const deleteIcon = document.querySelector("#delete");
 let fabricInstance;
 
 function initFabric() {
@@ -40,10 +42,14 @@ function initFabric() {
     fill: 'green'
   });
 
-  fabricInstance.add(red, blue, green)
+  fabricInstance
+    .add(red, blue, green);
+  
   fabricInstance.forEachObject(function (o) {
     o.hasBorders = o.hasControls = false;
   });
+  loadSVG();
+  bindDeleteAction();
 }
 
 function init() {
@@ -121,6 +127,34 @@ save.addEventListener("click", saveImage);
 video.addEventListener('canplay', function () {
   document.getElementById('loading').style.display = "none";
   document.getElementById('content').style.display = "block";
+  // document.getElementById("file").onchange = openSVG;
   render();
   initFabric();
 });
+
+function loadSVG(e) {
+  const target = document.getElementById("delete");
+
+  fabric.loadSVGFromString(target.outerHTML, function(objects, options) {
+    var svg = fabric.util.groupSVGElements(objects, options);
+    svg.set({
+        top: 90,
+        left: 90,
+        originX: 'center',
+        originY: 'center'
+    });
+    svg.scaleToWidth(50);
+    svg.scaleToHeight(50);
+    svg.hasBorders = svg.hasControls = false;
+    fabricInstance.add(svg).renderAll();
+  });
+}
+
+function bindDeleteAction() {
+  
+  fabricInstance.on({
+    'touch:drag': function(e) {
+      console.log(e);
+    }
+  })
+}
