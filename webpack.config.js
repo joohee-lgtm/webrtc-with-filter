@@ -98,11 +98,11 @@ async function injectConfig() {
   ];
 
   targets.forEach(function(dir){
-    entries[`${dir}/index`] = [`./src/demos/${dir}/${dir}.js`]
+    entries[`${dir}/index`] = [`./src/demos/${dir}/index.js`]
     plugins.push(
       new HtmlWebPackPlugin({
         inject: false,
-        template: `./src/demos/${dir}/${dir}.html`,
+        template: `./src/demos/${dir}/index.html`,
         filename: `./${dir}/index.html`
       })  
     );
