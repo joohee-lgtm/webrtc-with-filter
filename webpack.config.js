@@ -1,11 +1,9 @@
+const webpack = require("webpack");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebpackCleanupPlugin = require("webpack-cleanup-plugin");
 const path = require("path");
 const fs = require('fs');
-
-// const util = require('util');
-// const glob = util.promisify(require('glob'));
 
 const config = {
   entry: {
@@ -60,6 +58,7 @@ const config = {
     ]
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new WebpackCleanupPlugin(),
     new MiniCssExtractPlugin({
       filename: "[name].css",
@@ -76,6 +75,7 @@ async function getDemos() {
       demos.push(file);
     })
     resolve(demos);
+    return demos;
   });
 }
 
@@ -113,13 +113,17 @@ async function injectConfig() {
     ...entries
   };
   config.plugins = config.plugins.concat(plugins);
-
-  console.log(targets);
+  return config;
 }
 
-module.exports = () => {
+module.exports = (env, argv) => {
   return new Promise(async (resolve, reject) => {
-    await injectConfig();
-    resolve(config);
+    const injected = await injectConfig();
+    
+    if (argv.mode === 'production') {
+      injected.watch = false;
+    }      
+    resolve(injected);
+    return ;
   });
-};
+}

@@ -1,7 +1,7 @@
 /*
 ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
-
+const saveButton = document.getElementById('save');
 const video = document.getElementById('video');
 const buffer = document.createElement('canvas');
 const canvas = document.getElementById('canvas');
@@ -33,6 +33,12 @@ function setup(stream) {
     
     iconContext.drawImage(frame.buffer, 0, 0, iconContext.canvas.width, iconContext.canvas.height);
   });
+
+  saveButton.addEventListener('click', save);
+}
+
+function save() {
+  debugger;
 }
 
 function render() {
