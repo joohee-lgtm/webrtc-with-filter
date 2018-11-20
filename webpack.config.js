@@ -5,19 +5,23 @@ const WebpackCleanupPlugin = require("webpack-cleanup-plugin");
 const path = require("path");
 const fs = require('fs');
 
+// https://github.com/FEDevelopers/tech.description/wiki/Webpack%EC%9D%98-%ED%98%BC%EB%9E%80%EC%8A%A4%EB%9F%B0-%EC%82%AC%ED%95%AD%EB%93%A4
 const config = {
   entry: {
-    app: ['./src/index.js'],
+    app: ["./src/index.js"],
   },
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: './dist'
   },
+  // https://github.com/webpack/webpack/issues/2530
   devServer: {
-    hot: true,
-    contentBase: path.join(__dirname, './dist'),
-    historyApiFallback: true
+    contentBase: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
+    historyApiFallback: true,
+    watchContentBase: true,
+    inline: true
   },
   cache: false,
   watch: true,
@@ -58,8 +62,8 @@ const config = {
     ]
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new WebpackCleanupPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
       filename: "[name].css",
       chunkFilename: "[id].css"
@@ -84,6 +88,7 @@ async function injectConfig() {
   const entries = {};
   const plugins = [
     new HtmlWebPackPlugin({
+      cache: false,
       inject: false,
       scripts: [
         {
@@ -101,6 +106,7 @@ async function injectConfig() {
     entries[`${dir}/index`] = [`./src/demos/${dir}/index.js`]
     plugins.push(
       new HtmlWebPackPlugin({
+        cache: false,
         inject: false,
         template: `./src/demos/${dir}/index.html`,
         filename: `./${dir}/index.html`
@@ -122,7 +128,8 @@ module.exports = (env, argv) => {
     
     if (argv.mode === 'production') {
       injected.watch = false;
-    }      
+    } 
+    
     resolve(injected);
     return ;
   });
