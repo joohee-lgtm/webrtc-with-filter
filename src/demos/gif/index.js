@@ -1,10 +1,13 @@
 /*
 ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
+import GIF from "gif.js";
+
 const saveButton = document.getElementById('save');
 const video = document.getElementById('video');
+const preview = document.getElementById('preview');
 const buffer = document.createElement('canvas');
-const canvas = document.getElementById('canvas');
+const output = document.getElementById('output');
 const icon = document.getElementById('icon');
 const picka = document.getElementById('picka');
 
@@ -19,31 +22,75 @@ function init() {
   .catch((err) => console.log('There was an error 😱', err));
 }
 
-function setup(stream) {
-  canvas.style.display = 'block';
+let gifFrames = [];
 
+function setup(stream) {
   video.srcObject = stream;
   video.play();
 
   window.devicePixelRatio = 1;
   
-  gifler(picka.src).frames('canvas#icon', function(iconContext, frame){
+  const prm = gifler(picka.src).frames('canvas#icon', function(iconContext, frame){
     iconContext.canvas.width = parseInt(picka.naturalWidth*0.6, 10);
     iconContext.canvas.height = parseInt(picka.naturalHeight*0.6, 10);
     
     iconContext.drawImage(frame.buffer, 0, 0, iconContext.canvas.width, iconContext.canvas.height);
   });
 
+  prm.then(function(e) {
+    gifFrames = [].concat(e._frames);
+  });
+
   saveButton.addEventListener('click', save);
 }
 
 function save() {
-  debugger;
+  const temp = document.createElement('canvas');
+  const bufferContext =  buffer.getContext('2d');
+  const tempContext = temp.getContext('2d');
+  const gif = new GIF({
+    workers: 1,
+    quality: 30,
+    width: buffer.width,
+    height: buffer.height
+  });
+
+  temp.width = buffer.width;
+  temp.height = buffer.height;
+
+  // gifFrames[0].buffer.width = icon.width;
+  // gifFrames[0].buffer.height = icon.height;
+  const gifOption = {
+    delay: 70, // TODO delay from original gif
+    copy: true
+  }
+  
+  tempContext.drawImage(buffer, 0, 0);
+  tempContext.drawImage(gifFrames[0].buffer, 0, 0);
+  gif.addFrame(tempContext, gifOption);
+
+  tempContext.drawImage(buffer, 0, 0);
+  tempContext.drawImage(gifFrames[1].buffer, 0, 0);
+  gif.addFrame(tempContext, gifOption);
+
+  tempContext.drawImage(buffer, 0, 0);
+  tempContext.drawImage(gifFrames[2].buffer, 0, 0);
+  gif.addFrame(tempContext, gifOption);
+
+  tempContext.drawImage(buffer, 0, 0);
+  tempContext.drawImage(gifFrames[3].buffer, 0, 0);
+  gif.addFrame(tempContext, gifOption);
+  
+  gif.on('finished', function(blob) {
+    const src = URL.createObjectURL(blob);
+    preview.src = src;
+  });
+
+  gif.render();
 }
 
 function render() {
   const bufferContext = buffer.getContext('2d');
-  const iconContext = icon.getContext('2d');  
   buffer.width = video.videoWidth;
   buffer.height = video.videoHeight;
   
@@ -54,13 +101,13 @@ function render() {
   // 화면 그리기
   bufferContext.drawImage(video, 0, 0);
 
-  canvas.width = buffer.width;
-  canvas.height = buffer.height;
+  output.width = buffer.width;
+  output.height = buffer.height;
 
-  const ctx =  canvas.getContext('2d');
+  const ctx =  output.getContext('2d');
   
   ctx.drawImage(buffer,0,0);
-  ctx.drawImage(icon,0,canvas.height - icon.height);
+  ctx.drawImage(icon,0,output.height - icon.height);
 
   window.requestAnimationFrame(render);
 };

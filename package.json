@@ -32,10 +32,13 @@
   },
   "dependencies": {
     "dat.gui": "^0.7.3",
+    "gif.js": "^0.2.0",
     "http-server": "^0.11.1",
     "lodash.throttle": "^4.1.1",
     "modernizr": "^3.6.0",
     "normalize.css": "^8.0.1",
+    "omggif": "^1.0.9",
+    "recordrtc": "^5.4.8",
     "tracking": "^1.1.3"
   }
 }
