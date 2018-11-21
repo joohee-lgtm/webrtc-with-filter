@@ -5,6 +5,7 @@ import GIF from "gif.js";
 
 const saveButton = document.querySelector('[data-value="gifjs"]');
 const saveCCaptureButtons = document.querySelectorAll('.ccapture');
+const saveMP4Button = document.querySelector('.ffmpegserver');
 const video = document.getElementById('video');
 const preview = document.getElementById('preview');
 const buffer = document.createElement('canvas');
@@ -42,10 +43,65 @@ function setup(stream) {
     gifFrames = [].concat(e._frames);
   });
 
+  saveMP4Button.addEventListener('click', saveMP4);
   saveButton.addEventListener('click', save);
   [...saveCCaptureButtons].forEach(function(btn) {
     btn.addEventListener('click', saveUseCCapture.bind(this, btn.dataset.value));
   })
+}
+
+function showVideoLink(url, size) {
+  console.log(url);
+  size = size ? (" [size: " + (size / 1024 / 1024).toFixed(1) + "meg]") : " [unknown size]";
+  var a = document.createElement("a");
+  a.href = `http://localhost:8080${url}`;
+  var filename = url;
+  var slashNdx = filename.lastIndexOf("/");
+  if (slashNdx >= 0) {
+    filename = filename.substr(slashNdx + 1);
+  }
+  a.download = filename;
+  a.appendChild(document.createTextNode(url + size));
+  document.body.appendChild(a);
+}
+
+function saveMP4(){
+  const capturer = new CCapture({
+    format: 'ffmpegserver',
+    framerate: 10,
+    verbose: true,
+    name: "foobar",     // videos will be named foobar-#.mp4, untitled if not set.
+    extension: ".mp4",  // extension for file. default = ".mp4"
+    codec: "mpeg4",     // this is an valid ffmpeg codec "mpeg4", "libx264", "flv1", etc... // if not set ffmpeg guesses based on extension.
+    onProgress: function(e){
+      console.log(e);
+    }
+  });
+
+  const temp = document.createElement('canvas');
+  const tempContext = temp.getContext('2d');
+
+  temp.width = buffer.width;
+  temp.height = buffer.height;
+
+  capturer.start();
+  let i = 0;
+
+  const tempRenderer = function(){
+    if (i < gifFrames.length) {
+      tempContext.drawImage(buffer, 0, 0);
+      tempContext.drawImage(gifFrames[i].buffer, 0, 0);
+      tempContext.restore();
+      capturer.capture(temp);  
+      i++;
+      requestAnimationFrame(tempRenderer);
+    } else {
+      capturer.stop();
+      capturer.save(showVideoLink);    
+    }
+  }
+
+  requestAnimationFrame(tempRenderer);
 }
 
 function saveUseCCapture(format) {

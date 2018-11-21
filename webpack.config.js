@@ -21,7 +21,8 @@ const config = {
     publicPath: '/',
     historyApiFallback: true,
     watchContentBase: true,
-    inline: true
+    inline: true,
+    port: 3000
   },
   cache: false,
   watch: true,
