@@ -36,8 +36,22 @@ function updateFilters(name, value) {
     updated[name] = target[3].replace("${value}", value);
   }
 
+  Object.keys(updated).forEach(function(key){
+    let target = canvasFilterValue.querySelector(`.${key}`) 
+    if(!target) {
+      target = document.createElement('button');
+      target.className = key;
+      canvasFilterValue.appendChild(target);
+      target.addEventListener('click', function() {
+        resetTarget(target, key)
+      });
+    }
+    target.innerText = updated[key];
+  });  
+
   bufferFilter = Object.values(updated).join(" ");
-  canvasFilterValue.innerText = bufferFilter;
+
+  // canvasFilterValue.innerText = bufferFilter;
 }
 
 function initGUI() {
@@ -78,25 +92,17 @@ function initGUI() {
 }
 
 function reset() {
-  // filterInstance.message = "WebRTC";
-  // filterInstance.blur = 0;
-  // filterInstance.brightness = 100;
-  // filterInstance.contrast = 100;
-  // filterInstance. grayscale = 0;
-  // filterInstance.hue_rotate = 0;
-  // filterInstance.invert = 0;
-  // filterInstance.opacity = 100;
-  // filterInstance.saturate = 100;
-  // filterInstance.sepia = 0;
-  
   guiControllerMap['message'].setValue("WebRTC");
 
   const filterName = Object.keys(filters);
-
   filterName.forEach(function(name) {
     guiControllerMap[name].setValue(filters[name][2]);
   })
+}
 
+function resetTarget(self, name) {
+  guiControllerMap[name].setValue(filters[name][2]);
+  self.parentElement.removeChild(self);
 }
 
 function init() {
