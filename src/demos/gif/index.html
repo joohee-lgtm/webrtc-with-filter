@@ -20,11 +20,17 @@
             <video id="video" playsinline style="display:none"></video>
             <canvas id="output"></canvas>
             <img id="preview"></canvas>
-            <button id="save">save</button>
+            <div>
+                <button data-value="gifjs">gif(gif.js)</button>
+                <button data-value="webm" class="ccapture">ccapture format: webm</button>
+                <button data-value="gif" class="ccapture">ccapture format: gif</button>
+                <button data-value="png" class="ccapture">ccapture format: png</button>
+            </div>
         </div>
         <canvas style="display:none" id="icon"></canvas>
         <img id="picka" width="0" height="0" src="https://themadcreator.github.io/gifler/assets/gif/run.gif" />
     </main>
+    <script type="text/javascript" src="./CCapture.all.min.js"></script>
     <script type="text/javascript" src="./index.js"></script>
 </body>
 </html>

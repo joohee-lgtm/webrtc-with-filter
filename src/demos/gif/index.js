@@ -3,7 +3,8 @@ ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
 import GIF from "gif.js";
 
-const saveButton = document.getElementById('save');
+const saveButton = document.querySelector('[data-value="gifjs"]');
+const saveCCaptureButtons = document.querySelectorAll('.ccapture');
 const video = document.getElementById('video');
 const preview = document.getElementById('preview');
 const buffer = document.createElement('canvas');
@@ -42,11 +43,48 @@ function setup(stream) {
   });
 
   saveButton.addEventListener('click', save);
+  [...saveCCaptureButtons].forEach(function(btn) {
+    btn.addEventListener('click', saveUseCCapture.bind(this, btn.dataset.value));
+  })
+}
+
+function saveUseCCapture(format) {
+  const temp = document.createElement('canvas');
+  const tempContext = temp.getContext('2d');
+  const capturer = new CCapture({
+    format,
+    workersPath: './',
+    framerate: 4,
+    verbose: true  
+  });
+
+  temp.width = buffer.width;
+  temp.height = buffer.height;
+
+  capturer.start();
+
+  tempContext.drawImage(buffer, 0, 0);
+  tempContext.drawImage(gifFrames[0].buffer, 0, 0);
+  capturer.capture(temp);
+
+  tempContext.drawImage(buffer, 0, 0);
+  tempContext.drawImage(gifFrames[1].buffer, 0, 0);
+  capturer.capture(temp);
+
+  tempContext.drawImage(buffer, 0, 0);
+  tempContext.drawImage(gifFrames[2].buffer, 0, 0);
+  capturer.capture(temp);
+
+  tempContext.drawImage(buffer, 0, 0);
+  tempContext.drawImage(gifFrames[3].buffer, 0, 0);
+  capturer.capture(temp);
+
+  capturer.stop();
+  capturer.save();
 }
 
 function save() {
   const temp = document.createElement('canvas');
-  const bufferContext =  buffer.getContext('2d');
   const tempContext = temp.getContext('2d');
   const gif = new GIF({
     workers: 1,
