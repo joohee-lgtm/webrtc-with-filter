@@ -6,6 +6,9 @@ import GIF from "gif.js";
 const saveButton = document.querySelector('[data-value="gifjs"]');
 const saveCCaptureButtons = document.querySelectorAll('.ccapture');
 const saveMP4Button = document.querySelector('.ffmpegserver');
+const startRecordingButton = document.querySelector('.record_start');
+const stopRecordingButton = document.querySelector('.record_stop');
+
 const video = document.getElementById('video');
 const preview = document.getElementById('preview');
 const buffer = document.createElement('canvas');
@@ -43,6 +46,8 @@ function setup(stream) {
     gifFrames = [].concat(e._frames);
   });
 
+  startRecordingButton.addEventListener('click', startRecording);
+  stopRecordingButton.addEventListener('click', stopRecording);
   saveMP4Button.addEventListener('click', saveMP4);
   saveButton.addEventListener('click', save);
   [...saveCCaptureButtons].forEach(function(btn) {
@@ -50,8 +55,43 @@ function setup(stream) {
   })
 }
 
+const webmCapture = new CCapture({
+  format: 'webm',
+  framerate: 30,
+  verbose: true,
+  name: "foobar",     // videos will be named foobar-#.mp4, untitled if not set.
+  extension: ".mp4",  // extension for file. default = ".mp4"
+  codec: "mpeg4"     // this is an valid ffmpeg codec "mpeg4", "libx264", "flv1", etc... // if not set ffmpeg guesses based on extension.
+});
+let nowRecording = false;
+const webmCaptureCanvas = document.createElement('canvas');
+const webmCaptureContext = webmCaptureCanvas.getContext('2d');
+
+const webmCaptureRender = function(){
+  webmCaptureContext.drawImage(output, 0, 0);
+  webmCaptureContext.restore();
+  webmCapture.capture(webmCaptureCanvas);  
+}
+
+function startRecording() {
+  nowRecording = true;
+  startRecordingButton.disabled = true;
+  stopRecordingButton.disabled = false;
+  webmCaptureCanvas.width = output.width;
+  webmCaptureCanvas.height = output.height;
+  webmCapture.start();
+}
+
+function stopRecording() {
+  nowRecording = false;
+  startRecordingButton.disabled = false;
+  stopRecordingButton.disabled = true;
+  webmCapture.stop();
+  webmCapture.save();    
+}
+
+
 function showVideoLink(url, size) {
-  console.log(url);
   size = size ? (" [size: " + (size / 1024 / 1024).toFixed(1) + "meg]") : " [unknown size]";
   var a = document.createElement("a");
   a.href = `http://localhost:8080${url}`;
@@ -66,6 +106,13 @@ function showVideoLink(url, size) {
 }
 
 function saveMP4(){
+  const socketScript = document.querySelector("#serverSocketScript");
+
+  if (socketScript.className.indexOf('load_fail') > -1) {
+    alert("ffmpegserver is not running")
+    return false;
+  }
+
   const capturer = new CCapture({
     format: 'ffmpegserver',
     framerate: 10,
@@ -202,6 +249,8 @@ function render() {
   
   ctx.drawImage(buffer,0,0);
   ctx.drawImage(icon,0,output.height - icon.height);
+
+  nowRecording && webmCaptureRender();
 
   window.requestAnimationFrame(render);
 };
