@@ -1,8 +1,23 @@
+import dat from "dat.gui";
+
+const gui = new dat.GUI();
 let video, output, loading, content, ctrack;
+let featureColorMap = {
+  shape: "#000",
+  rightEyePoint: "#000",
+  leftEyePoint: "#000",
+  rightEye: "#000",
+  leftEye: "#000",
+  rightEyebrow: "#000", 
+  leftEyebrow: "#000",
+  upperLip: "#000",
+  lowerLip: "#000",
+  noseRidge: "#000",
+  noseSide: "#000"
+}
 
 function init() {
   video = document.getElementById('video');
-  buffer = document.createElement('canvas');
   output = document.getElementById('output');
   loading = document.getElementById("loading");
   content = document.getElementById("content");
@@ -24,6 +39,18 @@ function setup(stream) {
   video.play();
 
   window.devicePixelRatio = 1;
+}
+
+function initGUI() {
+  const featureNames = Object.keys(featureColorMap);
+  
+  featureNames.forEach(function(name) {
+    gui.addColor(featureColorMap, name)
+      .listen()
+      .onChange(function (color) {
+        featureColorMap[name] = color;
+      });
+  });
 }
 
 // https://www.auduno.com/clmtrackr/examples/media/facemodel_numbering_new.png
@@ -60,14 +87,14 @@ function render() {
     const parsed = parseFaceModel(faceMatch);
 
     Object.keys(parsed).forEach(function(key){
-      renderPath(parsed[key]);
+      renderPath(parsed[key], featureColorMap[key]);
     });
   }
 
   window.requestAnimationFrame(render);
 }
 
-function renderPath(paths) {
+function renderPath(paths, color) {
   const outputContenxt =  output.getContext('2d');
 
   if (paths.length < 2) {
@@ -76,7 +103,7 @@ function renderPath(paths) {
   }
 
   outputContenxt.beginPath();
-  outputContenxt.strokeStyle = 'blue';
+  outputContenxt.strokeStyle = color;
   outputContenxt.moveTo.apply(outputContenxt, paths.shift());
 
   paths.forEach(function(point) {
@@ -96,6 +123,7 @@ function canplay() {
   ctrack.init();
   ctrack.start(video);
 
+  initGUI();
   render();
 }
 
