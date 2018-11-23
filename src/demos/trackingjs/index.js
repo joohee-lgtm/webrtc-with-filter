@@ -67,8 +67,8 @@ window.onload = function() {
       });
     
     var context = canvas.getContext('2d');
-    var tracker = new tracking.ObjectTracker(['face', 'eye', 'mouth']);
-    // var tracker = new tracking.ObjectTracker('eye');
+    // var tracker = new tracking.ObjectTracker(['face', 'eye', 'mouth']);
+    var tracker = new tracking.ObjectTracker('eye');
 
     // tracker.setInitialScale(4);
     tracker.setStepSize(1.7);
