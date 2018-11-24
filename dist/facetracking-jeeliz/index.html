@@ -4,15 +4,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="content-language" content="en-EN" />
-    <title>JEELIZ FACE FILTER : THREE.JS CUBE DEMO WITH THREE.JS HELPER</title>
-    <!-- INCLUDE JEELIZ FACEFILTER SCRIPT -->
     <script type="text/javascript" src="https://appstatic.jeeliz.com/faceFilter/jeelizFaceFilter.js"></script>
-    <!-- INCLUDE THREE.JS -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/90/three.min.js"></script>
-    <!-- INCLUDE JEELIZRESIZER -->
-    <script type="text/javascript" src="https://appstatic.jeeliz.com/faceFilter/JeelizResizer.js"></script>
-    <!-- INCLUDE JEELIZ THREE.JS HELPER -->
-    <!-- <script type="text/javascript" src="https://appstatic.jeeliz.com/faceFilter/JeelizThreejsHelper.js"></script> -->
+    <script type="text/javascript" src="https://appstatic.jeeliz.com/faceFilter/Canvas2DDisplay.js"></script>
     <link rel="stylesheet" href="../app.css">
 
 </head>
@@ -25,7 +18,7 @@
         <p>PLEASE ALLOW CAMERA ACCESS</p>
     </div>
     <!-- display: none 상태인 경우 라이브러리에서 0x0 인식-->
-    <canvas width="600" height="600" id='jeeFaceFilterCanvas'></canvas>
+    <canvas width="600" height="600" id='output'></canvas>
     <div id="content">
         <button id="start">start</button>
         <button id="stop">stop</button>
