@@ -75,10 +75,13 @@ const config = {
 async function getDemos() {
   return new Promise(function(resolve) {
     const demos = [];
+    const root = "./src/demos";
 
-    fs.readdirSync("./src/demos").forEach(file => {
-      demos.push(file);
+    fs.readdirSync(root, {withFileTypes: true}).forEach((file) => {
+      const stat = fs.statSync(`${root}/${file}`);
+      stat.isDirectory() && demos.push(file);
     })
+    console.log(demos);
     resolve(demos);
     return demos;
   });

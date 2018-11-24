@@ -1,8 +1,11 @@
 import dat from "dat.gui";
+import {
+  installMediaDevice,
+  getMediaElement,
+} from "../util";
 
 const gui = new dat.GUI();
-let video, output, loading, content, ctrack;
-let featureColorMap = {
+const featureColorMap = {
   shape: "#000",
   rightEyePoint: "#000",
   leftEyePoint: "#000",
@@ -14,32 +17,9 @@ let featureColorMap = {
   lowerLip: "#000",
   noseRidge: "#000",
   noseSide: "#000"
-}
-
-function init() {
-  video = document.getElementById('video');
-  output = document.getElementById('output');
-  loading = document.getElementById("loading");
-  content = document.getElementById("content");
-
-  video.addEventListener('canplay', canplay);
-
-  window.navigator.mediaDevices.getUserMedia({
-    audio: false,
-    video: {
-      facing: 'user'
-    }
-  })
-  .then(setup)
-  .catch((err) => console.log('There was an error 😱', err));
-}
-
-function setup(stream) {
-  video.srcObject = stream;
-  video.play();
-
-  window.devicePixelRatio = 1;
-}
+};
+let {video, output} = getMediaElement(); 
+let ctrack;
 
 function initGUI() {
   const featureNames = Object.keys(featureColorMap);
@@ -79,22 +59,22 @@ function parseFaceModel(f) {
 
 function render() {
   const faceMatch = ctrack.getCurrentPosition();
-  const outputContenxt =  output.getContext('2d');
+  const outputContenxt = output.getContext('2d');
   
-  outputContenxt.clearRect(0,0, output.width, output.height)
+  outputContenxt.clearRect(0,0, output.width, output.height);
 
   if (faceMatch) {
     const parsed = parseFaceModel(faceMatch);
 
     Object.keys(parsed).forEach(function(key){
-      renderPath(parsed[key], featureColorMap[key]);
+      strokePath(parsed[key], featureColorMap[key]);
     });
   }
 
   window.requestAnimationFrame(render);
 }
 
-function renderPath(paths, color) {
+function strokePath(paths, color) {
   const outputContenxt =  output.getContext('2d');
 
   if (paths.length < 2) {
@@ -106,19 +86,11 @@ function renderPath(paths, color) {
   outputContenxt.strokeStyle = color;
   outputContenxt.moveTo.apply(outputContenxt, paths.shift());
 
-  paths.forEach(function(point) {
-    outputContenxt.lineTo.apply(outputContenxt, point);
-  });
+  paths.forEach(point => outputContenxt.lineTo.apply(outputContenxt, point));
   outputContenxt.stroke();
 }
 
 function canplay() {
-  loading.style.display = "none";
-  content.style.display = "block";
-
-  output.width = video.videoWidth;
-  output.height = video.videoHeight;
-
   ctrack = new clm.tracker();
   ctrack.init();
   ctrack.start(video);
@@ -127,4 +99,7 @@ function canplay() {
   render();
 }
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", function() {
+  video.addEventListener('canplay', canplay);
+  installMediaDevice();
+});
