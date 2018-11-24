@@ -35,6 +35,7 @@
     "clmtrackr": "^1.1.2",
     "dat.gui": "^0.7.3",
     "gif.js": "^0.2.0",
+    "glfx": "0.0.4",
     "http-server": "^0.11.1",
     "jsfeat": "0.0.8",
     "lodash.throttle": "^4.1.1",
