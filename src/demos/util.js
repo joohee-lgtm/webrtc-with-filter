@@ -6,6 +6,8 @@ const getById = (id, tagName = "div") => {
     if (!target) {
         target = document.createElement(tagName);
         target.id = id;
+        target.style.display = "none";
+        document.body.append(target);
     }
 
     return target;
@@ -47,15 +49,15 @@ export const getUserMediaPromise = () => {
 }
 
 export const runDefaultSetup = (stream) => {
-    const {video, output} = getMediaElement();
+    const {video, output, buffer} = getMediaElement();
     const {loading, content} = getGuideElement();
 
     video.addEventListener("canplay", function() {
         loading.style.display = "none";
         content.style.display = "block";
       
-        output.width = video.videoWidth;
-        output.height = video.videoHeight;      
+        buffer.width = output.width = video.videoWidth;
+        buffer.height = output.height = video.videoHeight;      
     })
 
     video.srcObject = stream;
