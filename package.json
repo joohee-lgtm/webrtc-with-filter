@@ -39,6 +39,7 @@
     "jsfeat": "0.0.8",
     "lodash.throttle": "^4.1.1",
     "modernizr": "^3.6.0",
+    "node-emoji": "^1.8.1",
     "normalize.css": "^8.0.1",
     "omggif": "^1.0.9",
     "recordrtc": "^5.4.8",
