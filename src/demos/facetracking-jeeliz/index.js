@@ -3,7 +3,6 @@ function main(){
     window.CVD = null;
     JEEFACEFILTERAPI.init({
         canvasId: 'output',
-        maxFacesDetected: 3,
         NNCpath: 'https://appstatic.jeeliz.com/faceFilter/NNC.json', //root of NNC.json file
         callbackReady: function(errCode, spec){
             if (errCode){
