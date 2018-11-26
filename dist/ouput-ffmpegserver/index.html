@@ -17,7 +17,18 @@
     <canvas id="c"></canvas>
     <div id="progress">-</div>
   </body>
+  
   <script src="http://localhost:8080/ffmpegserver/CCapture.js"></script>
-  <script src="http://localhost:8080/ffmpegserver/ffmpegserver.js"></script>
+  <script>
+    function failServerAccess() {
+        document.querySelector("#serverSocketScript").className = "load_fail";
+        alert("ffmpegserver is not running ")
+    }
+</script>
+  <script id="serverSocketScript" src="http://localhost:8080/ffmpegserver/ffmpegserver.js" onerror="failServerAccess()"></script>
+  <p>
+    서버가 있어야 정상적으로 동작
+    <a target="_blank" href="https://oss.navercorp.com/ApolloFE/realtime-filter/issues/2#issuecomment-2682867">참고</a>
+  </p>
   <script src="./index.js"></script>
 </html>

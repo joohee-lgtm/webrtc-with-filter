@@ -2,6 +2,7 @@ const webpack = require("webpack");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebpackCleanupPlugin = require("webpack-cleanup-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require("path");
 const fs = require('fs');
 
@@ -81,7 +82,6 @@ async function getDemos() {
       const stat = fs.statSync(`${root}/${file}`);
       stat.isDirectory() && demos.push(file);
     })
-    console.log(demos);
     resolve(demos);
     return demos;
   });
@@ -106,8 +106,14 @@ async function injectConfig() {
     })
   ];
 
+  const copyWebpack = [];
+
   targets.forEach(function(dir){
     entries[`${dir}/index`] = [`./src/demos/${dir}/index.js`]
+    copyWebpack.push({
+      from: `./src/demos/${dir}/lib/**.js`, 
+      to: `${dir}/lib/[name].js`,
+    });
     plugins.push(
       new HtmlWebPackPlugin({
         cache: false,
@@ -117,6 +123,10 @@ async function injectConfig() {
       })  
     );
   });
+
+  plugins.push(
+    new CopyWebpackPlugin(copyWebpack)
+  )
 
   config.entry = {
     ...config.entry,

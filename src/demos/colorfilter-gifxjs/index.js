@@ -27,6 +27,7 @@ function render() {
     window.requestAnimationFrame(render);
   }
   glfxImage.src = src;
+  
 
   // outputContext.drawImage(src, 0, 0);
 
