@@ -6,8 +6,8 @@ import {
 let {video, buffer, output} = getMediaElement();
 const icon = document.getElementById('icon');
 const picka = document.getElementById('picka');
-const mediaRecorderButton = document.querySelector('button[data-value="mediarecorder"]');
-const mediaSourceButton = document.querySelector('button[data-value="mediasource"]');
+const canvasRecordButton = document.querySelector('button[data-value="canvasstream"]');
+const videoRecordButton = document.querySelector('button[data-value="videostream"]');
 
 function showVideoLink(url, size) {
   size = size ? (" [size: " + (size / 1024 / 1024).toFixed(1) + "meg]") : " [unknown size]";
@@ -52,57 +52,45 @@ function canplay() {
 
 let mediaRecorder;
 let chunks = [];
-let mediaSource;
-let recordedBlobs;
 let canvasStream = output.captureStream();
 let videoStream = video.captureStream();
 
-function mediaRecorderButtonClickHandler() {
-  if (mediaRecorderButton.classList.contains("ing")) {
+function videoRecordButtonClickHandler() {
+  if (videoRecordButton.classList.contains("ing")) {
+    videoRecordButton.classList.remove("ing");
+    canvasRecordButton.disabled = false;
     mediaRecorder && mediaRecorder.stop();
-    return ;
+  } else {
+    videoRecordButton.classList.add("ing");
+    canvasRecordButton.disabled = true;
+    record(videoStream);
   }
+}
 
-  mediaRecorderButton.classList.add("ing");
-  mediaRecorder = new MediaRecorder(videoStream);
+function canvasRecordButtonClickHandler() {
+  if (canvasRecordButton.classList.contains("ing")) {
+    canvasRecordButton.classList.remove("ing");
+    videoRecordButton.disabled = false;
+    mediaRecorder && mediaRecorder.stop();
+  } else {
+    canvasRecordButton.classList.add("ing");
+    videoRecordButton.disabled = true;
+    record(canvasStream);
+  }
+}
+
+function record(stream) {
+  mediaRecorder = new MediaRecorder(stream);
   mediaRecorder.addEventListener("dataavailable", function(e) {
     chunks.push(e.data);
-  })
+  });
   mediaRecorder.addEventListener("stop", function(){
     const recordedVideo = document.createElement('video');
     const blob = new Blob(chunks, { 'type' : 'video/webm' });
     const blobURL = URL.createObjectURL(blob);
     recordedVideo.src = blobURL;
-    mediaRecorderButton.classList.remove("ing");
-    window.open(blobURL);
-  });
-  mediaRecorder.start();
-}
-
-function mediaSourceButtonClickHandler() {
-  if (mediaSourceButton.classList.contains("ing")) {
-    mediaRecorder && mediaRecorder.stop();
-    return ;
-  }
-
-  let options = {mimeType: 'video/webm'};
-  recordedBlobs = [];
-  mediaSourceButton.classList.add("ing");
-  mediaSource = new MediaSource();
-  // mediaSource.addEventListener('sourceopen', function() {
-  //   mediaSource.addSourceBuffer('video/webm; codecs="vp8"');
-  // });
-
-  mediaRecorder = new MediaRecorder(canvasStream, options);
-  mediaRecorder.addEventListener("dataavailable", function(e) {
-    recordedBlobs.push(e.data);
-  });
-  mediaRecorder.addEventListener("stop", function(){
-    const recordedVideo = document.createElement('video');
-    const blob = new Blob(recordedBlobs, { 'type' : 'video/webm' });
-    const blobURL = URL.createObjectURL(blob);;
-    recordedVideo.src = blobURL;
-    mediaRecorderButton.classList.remove("ing");
+    chunks = [];
+    
     window.open(blobURL);
   });
   mediaRecorder.start();
@@ -111,6 +99,6 @@ function mediaSourceButtonClickHandler() {
 document.addEventListener("DOMContentLoaded", function(){
   installMediaDevice();
   video.addEventListener('canplay', canplay);
-  mediaRecorderButton.addEventListener('click', mediaRecorderButtonClickHandler);
-  mediaSourceButton.addEventListener('click', mediaSourceButtonClickHandler);
+  canvasRecordButton.addEventListener('click', canvasRecordButtonClickHandler);
+  videoRecordButton.addEventListener('click', videoRecordButtonClickHandler);
 });
