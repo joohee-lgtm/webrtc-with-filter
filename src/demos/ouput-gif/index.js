@@ -110,7 +110,7 @@ function saveMP4(){
 
   if (socketScript.className.indexOf('load_fail') > -1) {
     alert("ffmpegserver is not running")
-    return false;
+    return false;ㅠ
   }
 
   const capturer = new CCapture({
