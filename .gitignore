@@ -29,3 +29,6 @@ tmp
 
 # Users Environment Variables
 .lock-wscript
+
+# vs code 설정
+.vscode

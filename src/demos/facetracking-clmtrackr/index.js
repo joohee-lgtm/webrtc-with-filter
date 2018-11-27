@@ -46,7 +46,7 @@ function parseFaceModel(f) {
   const lowerLip = f.slice(50, 56).concat([f[44], f[56], f[57], f[58], f[50]]);
   const noseRidge = [f[33], f[41], f[62]];
   const noseSide = [f[34], f[35], f[36], f[42], f[37], f[43], f[38], f[39], f[40]];
-
+  
   return {
     shape, 
     rightEyePoint, leftEyePoint, 

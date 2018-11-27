@@ -5,10 +5,14 @@
         <meta http-equiv="content-language" content="en-EN" />
     </head>
     <body>
-        <ul>
-            <% htmlWebpackPlugin.options.demos.forEach(function(demo){ %>
-                <li><a href="./<%= demo %>/index.html"><%= demo %></a> </li>
-            <% }); %>
-        </ul>
+        <h2>WebRTC <code>getUserMedia()</code> with filter</h2>
+        <% htmlWebpackPlugin.options.demos.forEach(function(preset){ %>
+            <h3><%= preset[0] %></h3> 
+            <ul>
+                <% preset[1].forEach(function(sub){ %>
+                    <li><a href="./<%= preset[0] %>-<%= sub %>/index.html"><%= sub %></a> </li>
+                <%})%>
+            </ul>
+        <% }); %>
     </body>
 </html>
