@@ -120,8 +120,6 @@ function makeDemoDir(target) {
     temp.push([item, arr[item]])
   });
 
-  console.log(JSON.stringify(temp));
-
   return temp;
 }
 

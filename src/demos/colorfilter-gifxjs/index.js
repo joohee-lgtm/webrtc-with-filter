@@ -19,18 +19,13 @@ function render() {
   // 화면 그리기
   bufferContext.drawImage(video, 0, 0);
 
-  const videoTexture = glfxCanvas.texture(video);
-  glfxCanvas.draw(videoTexture).triangleBlur(20).update();
-  const src = glfxCanvas.toDataURL();
-  glfxImage.onload = function() {
-    outputContext.drawImage(this, 0, 0);
-    window.requestAnimationFrame(render);
-  }
-  glfxImage.src = src;
-  
-
-  // outputContext.drawImage(src, 0, 0);
-
+  const videoTexture = glfxCanvas.texture(buffer);
+  glfxCanvas.draw(videoTexture).denoise(11).update();
+  outputContext.drawImage(glfxCanvas, 0, 0);
+  outputContext.rect(20,20,150,100)
+  outputContext.stroke();
+  // outputContext.stroke();
+  window.requestAnimationFrame(render);
 }
 
 // https://webgl2fundamentals.org/webgl/lessons/ko/webgl-image-processing.html ^^..

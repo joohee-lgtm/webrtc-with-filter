@@ -1,8 +1,20 @@
 
+let video;
+
 function handleSuccess(stream) {
-    const video = document.querySelector('video');
-    const videoTracks = stream.getVideoTracks();
+    video = document.querySelector('video');
     video.srcObject = stream;
+
+    render();
+}
+
+const output = document.getElementById("output");
+function render() {
+    const context = output.getContext("2d");
+    
+    context.drawImage(video, 0,0);
+
+    requestAnimationFrame(render);
 }
 
 function handleError(error) {
