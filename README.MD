@@ -14,22 +14,23 @@
 
 ### 구현하는법
 - 필터를 추가해서 동영상을 꾸며주는 기능에 대한 코드는 아래 요약에 적혀있는 1~6번의 과정과 크게 다르지 않다.
-- 이 과정에서 크게 webRTC, 캔버스 API, webgl 기술이 필요하다. 각각의 기술에 대한 설명은 각 제목의 링크로 이동하면 볼 수 있다. 
+- 이 과정에서 크게 webRTC, 캔버스 API, webgl 기술이 필요하다. 
+- 각각의 기술과 데모를 구현할때 사용한 라이브러리에 대한 설명은 각 제목의 링크로 이동하면 볼 수 있다. 
 
 #### 필요한 기술
-1. WebRTC and MediaStream
-  - getUserMedia API
-  - MediaStream 
-2. streaming canvas with filter
-  - canvas 2d context filter (svg / css)
-  - webgl filter
-  - canvas with gesture event
-  - face tracking library
-3. record streaming canvas
-  - captureStream
-  - MediaRecorder
-  - RTCPeerConnection
-  - record library
+1. [WebRTC and MediaStream]()
+    - getUserMedia API
+    - MediaStream 
+2. [streaming canvas with filter]()
+    - canvas 2d context filter (svg / css)
+    - webgl filter
+    - canvas with gesture event
+    - face tracking library
+3. [record streaming canvas]()
+    - captureStream
+    - MediaRecorder
+    - RTCPeerConnection
+    - record library
 
 #### 코드 요약
 1. `getUserMedia()` 로 디바이스 카메라에 대한 접근권한을 획득한다.
