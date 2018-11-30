@@ -81,6 +81,7 @@ function canvasRecordButtonClickHandler() {
 
 function record(stream) {
   mediaRecorder = new MediaRecorder(stream);
+  window.mr = mediaRecorder;
   mediaRecorder.addEventListener("dataavailable", function(e) {
     chunks.push(e.data);
   });
