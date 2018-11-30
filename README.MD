@@ -12,7 +12,26 @@
 - 효과 넣기 (색상 넣기, giphy 아이템 넣기, 눈코입 어디있는지 찾기..)
 - 사진 or 동영상 파일로 저장하기
 
-### 기본 구현 흐름
+### 구현하는법
+- 필터를 추가해서 동영상을 꾸며주는 기능에 대한 코드는 아래 요약에 적혀있는 1~6번의 과정과 크게 다르지 않다.
+- 이 과정에서 크게 webRTC, 캔버스 API, webgl 기술이 필요하다. 각각의 기술에 대한 설명은 각 제목의 링크로 이동하면 볼 수 있다. 
+
+#### 필요한 기술
+1. WebRTC and MediaStream
+  - getUserMedia API
+  - MediaStream 
+2. streaming canvas with filter
+  - canvas 2d context filter (svg / css)
+  - webgl filter
+  - canvas with gesture event
+  - face tracking library
+3. record streaming canvas
+  - captureStream
+  - MediaRecorder
+  - RTCPeerConnection
+  - record library
+
+#### 코드 요약
 1. `getUserMedia()` 로 디바이스 카메라에 대한 접근권한을 획득한다.
 2. 카메라가 전달해주는 MediaStream 객체를 `<video>` 태그에 소스로 지정한다.
 3. `<video>` 재생이 시작되면, 비디오 프레임을 `<canvas>` 에 그려주는 함수를 실행한다.
@@ -59,21 +78,6 @@ window.navigator.mediaDevices.getUserMedia({ // (1)
 .catch(function(err) {...} );
 ```
 
-- 실시간 이미지 필터를 구현하는데는 위의 흐름과 크게 다르지 않다.
-- 1~6 번 과정을 더 구체화 시켜줄 브라우저 API나 라이브러리는 아래 문서를 순서대로 읽어보면 된다.
 
-### 1. WebRTC and MediaStream
-- getUserMedia
-- MediaStream
-### 2. streaming canvas with filter
-- canvas native filter (svg / css)
-- webgl filter (#3)
-- canvas manipulation library (fabric.js, glfx.js, ...)
-- face tracking
-### 3. record streaming canvas
-- captureStream
-- MediaRecorder
-- RTCPeerConnection
-- record library
 
 
