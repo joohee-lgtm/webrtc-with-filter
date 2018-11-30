@@ -22,6 +22,7 @@ function render() {
   bufferContext.scale(-1, 1);
 
   // 화면 그리기
+  bufferContext.filter = "blur(15px)"
   bufferContext.drawImage(video, 0, 0);
   outputContext.drawImage(buffer, 0, 0);
 
@@ -55,7 +56,7 @@ function canplay () {
 
 document.addEventListener("DOMContentLoaded", function() {
   saveButton.addEventListener("click", saveImage);
-  addButton.addEventListener('click', addRandomEmoji);
+  addButton.addEventListener('click', () => {addRandomEmoji()});
   video.addEventListener('canplay', canplay);
   installMediaDevice();
 });

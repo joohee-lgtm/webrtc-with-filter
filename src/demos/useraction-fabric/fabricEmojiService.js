@@ -31,7 +31,6 @@ function randomInt(min, max) {
 
 
 export function initFabric() {
-
   fabricInstance = new fabric.Canvas('fabric', {
     width: 640,
     height: 480
@@ -58,7 +57,7 @@ export function initFabric() {
       var config = {
         left: fabricInstance.getWidth() / 2,
         top: fabricInstance.getHeight() - 30,
-        fill: '#77f',
+        fill: '#fff',
         originX: 'center',
         originY: 'center',
         selectable: false,
@@ -83,15 +82,18 @@ export function initFabric() {
   }
   
   
-  export function addRandomEmoji() {
+  export function addRandomEmoji(post = {
+    y: randomInt(10, 470), 
+    x: randomInt(10, 630)
+  }) {
     if (emoji.length < 1) {
       emoji = shuffle(emoji_preset);
     }
     const size = randomInt(25, 50);
     // const size = 300;
     const random = new fabric.Textbox(String.fromCodePoint(emoji.pop()), {
-      top: randomInt(10, 470),
-      left: randomInt(10, 630),
+      top: post.y,
+      left: post.x,
       angle: randomInt(-180, 180),
       fontSize: size,
       hasBorders: false,
@@ -104,6 +106,9 @@ export function initFabric() {
   function bindDeleteAction() {
     // http://fabricjs.com/intersection
     fabricInstance.on({
+      'mouse:down' : function(options) {
+        !options.target && addRandomEmoji(options.pointer);
+      },
       'object:moving': function(e) {
         e.target.setCoords();
         fabricInstance.forEachObject(function(obj) {
