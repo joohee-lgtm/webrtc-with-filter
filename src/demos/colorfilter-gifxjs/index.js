@@ -20,11 +20,26 @@ function render() {
   bufferContext.drawImage(video, 0, 0);
 
   const videoTexture = glfxCanvas.texture(buffer);
-  glfxCanvas.draw(videoTexture).denoise(11).update();
+  glfxCanvas.draw(videoTexture).hexagonalPixelate(320, 239.5, 20).update();
   outputContext.drawImage(glfxCanvas, 0, 0);
-  outputContext.rect(20,20,150,100)
+
+  const text = "WebGL & WebRTC";
+  const textWidth = outputContext.measureText(text).width;
+  outputContext.font = "900 30pt sans-serif";
+  outputContext.fillStyle = "#fff";
+  outputContext.textAlign = "center";
+  outputContext.textBaseline="middle";
+  outputContext.fillText(text,buffer.width/2,buffer.height/2);
+  outputContext.lineWidth = 10;
+  outputContext.strokeStyle = "#fff";
+  outputContext.beginPath();
+  outputContext.moveTo(buffer.width/2-textWidth/2-30, buffer.height/2-50);
+  outputContext.lineTo(buffer.width/2+textWidth/2+30, buffer.height/2-50);
+  outputContext.lineTo(buffer.width/2+textWidth/2+30, buffer.height/2+50);
+  outputContext.lineTo(buffer.width/2-textWidth/2-30, buffer.height/2+50);
+  outputContext.lineTo(buffer.width/2-textWidth/2-30, buffer.height/2-50);
   outputContext.stroke();
-  // outputContext.stroke();
+
   window.requestAnimationFrame(render);
 }
 

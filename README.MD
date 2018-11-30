@@ -60,11 +60,10 @@ window.navigator.mediaDevices.getUserMedia({ // (1)
 ```
 
 - 실시간 이미지 필터를 구현하는데는 위의 흐름과 크게 다르지 않다.
-- 디바이스 접근 이후에는 모든 것이 화면에 보여지는 canvas 를 중심으로 구현된다.
 - 1~6 번 과정을 더 구체화 시켜줄 브라우저 API나 라이브러리는 아래 문서를 순서대로 읽어보면 된다.
 
-### 1. user webcam to canvas
-- getUserMedia by WebRTC
+### 1. WebRTC and MediaStream
+- getUserMedia
 - MediaStream
 ### 2. streaming canvas with filter
 - canvas native filter (svg / css)
