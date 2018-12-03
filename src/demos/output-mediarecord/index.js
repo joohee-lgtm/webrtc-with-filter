@@ -80,7 +80,12 @@ function canvasRecordButtonClickHandler() {
 }
 
 function record(stream) {
-  mediaRecorder = new MediaRecorder(stream);
+  // https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/isTypeSupported
+  // https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/mimeType
+  // video/mp4 안되는데 짱나게 하고 있네 ..
+  mediaRecorder = new MediaRecorder(stream, {
+    // mimeType : 'video/mp4'
+  });
   window.mr = mediaRecorder;
   mediaRecorder.addEventListener("dataavailable", function(e) {
     chunks.push(e.data);

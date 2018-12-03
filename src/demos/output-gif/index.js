@@ -156,7 +156,7 @@ function saveUseCCapture(format) {
   const tempContext = temp.getContext('2d');
   const capturer = new CCapture({
     format,
-    workersPath: './',
+    workersPath: './lib/',
     framerate: 4,
     verbose: true  
   });
@@ -191,6 +191,7 @@ function save() {
   const tempContext = temp.getContext('2d');
   const gif = new GIF({
     workers: 1,
+    workerScript: './lib/gif.worker.js',
     quality: 30,
     width: buffer.width,
     height: buffer.height

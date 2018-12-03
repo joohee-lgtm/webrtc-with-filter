@@ -77,20 +77,25 @@ export const getUserMediaPromise = () => {
     })
 }
 
+export const hideGuideContent = () => {
+    const {
+        loading,
+        content
+    } = getGuideElement();
+
+    loading.style.display = "none";
+    content.style.display = "block";
+}
+
 export const runDefaultSetup = (stream) => {
     const {
         video,
         output,
         buffer
     } = getMediaElement();
-    const {
-        loading,
-        content
-    } = getGuideElement();
 
     video.addEventListener("canplay", function () {
-        loading.style.display = "none";
-        content.style.display = "block";
+        hideGuideContent();
 
         buffer.width = output.width = video.videoWidth;
         buffer.height = output.height = video.videoHeight;

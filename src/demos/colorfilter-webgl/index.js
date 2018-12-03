@@ -22,7 +22,6 @@ function setup(stream) {
   
   video.srcObject = stream;
   video.play();
-    
   window.devicePixelRatio = 1;
   update();
 }
@@ -36,13 +35,18 @@ function render() {
   canvas.width = buffer.width;
   canvas.height = buffer.height;
 
+  if (!glslCanvas) {
+    glslCanvas = new GlslCanvas(canvas);
+    update();
+  }
+
   var dataURL = buffer.toDataURL();
   glslCanvas.setUniform('u_texture', dataURL);
-  
-  window.requestAnimationFrame(render);
+  // window.requestAnimationFrame(render);
 }
 
 function update() {
+
   const vertexShader = `
     #ifdef GL_ES
     precision mediump float;
@@ -75,12 +79,9 @@ document.addEventListener("DOMContentLoaded", function() {
 video.addEventListener('canplay', function(){
   document.getElementById('loading').style.display = "none";
   document.getElementById('content').style.display = "block";
-  if (!glslCanvas) {
-    
-    glslCanvas = new GlslCanvas(canvas);
-    update();
-  }
-  render();
+  setInterval(function(){
+    render();
+  }, 100);
 });
 
 [...document.getElementById('buttons').children].forEach(button => {
