@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="content-language" content="en-EN" />
+    <script type="text/javascript" src="https://appstatic.jeeliz.com/faceFilter/jeelizFaceFilter.js"></script>
+    <script type="text/javascript" src="https://appstatic.jeeliz.com/faceFilter/Canvas2DDisplay.js"></script>
+    <link rel="stylesheet" href="../app.css">
+
+</head>
+
+<body>
+    <div id="loading">
+        <p>CAMERA LOADING</p>
+    </div>
+    <div id="permission">
+        <p>PLEASE ALLOW CAMERA ACCESS</p>
+    </div>
+    <!-- display: none 상태인 경우 라이브러리에서 0x0 인식-->
+    <canvas width="600" height="600" id='output'></canvas>
+    <div id="content">
+        <button id="start">start</button>
+        <button id="stop">stop</button>
+    </div>
+    <script type="text/javascript" src="index.js"></script>
+</body>
+
+</html>

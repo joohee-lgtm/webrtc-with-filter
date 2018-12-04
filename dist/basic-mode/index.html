@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>getUserMedia</title>
+</head>
+<body>
+<div id="container">
+    <div id="content" style="display:none">
+        <p>streaming in video tag</p>
+        <video id="video" autoplay playsinline></video>
+        <p>streaming in canvas tag</p>
+        <canvas id="output" autoplay playsinline></canvas>
+    </div>
+    <div>
+        <button id="user">Open facing camera</button>
+        <button id="environment">Open environment camera</button>
+    </div>
+</div>
+
+<!-- <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script> -->
+<script src="./index.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+video, canvas {
+  border: 1px solid #98DAC6; 
+}
+
+#content, #permission {
+  display: none;
+}
+
+.loading p {
+  display: table-cell;
+  height: 64px;
+  vertical-align: middle;
+}

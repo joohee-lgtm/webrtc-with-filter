@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="content-language" content="en-EN" />
+    <link rel="stylesheet" href="../app.css">
+</head>
+
+<body>
+    <main>
+        <div id="loading">
+            <p>CAMERA LOADING</p>
+        </div>
+        <div id="permission">
+            <p>PLEASE ALLOW CAMERA ACCESS</p>
+        </div>
+        <div id="content">
+            <video id="video" playsinline style="display:none"></video>
+            <canvas id="output"></canvas>
+            <img id="preview"></canvas>
+            <style>
+                button::after {
+                    content: " Start"
+                }
+                button.ing::after {
+                    content: " Stop"
+                }
+            </style>
+            <div>
+                <button data-value="canvasstream">record cavas stream</button>
+            </div>
+            <div>
+                <button data-value="videostream">record video stream</button>
+            </div>
+
+        </div>
+        <canvas style="display:none" id="icon"></canvas>
+    </main>
+    <img id="picka" width="0" height="0" src="https://themadcreator.github.io/gifler/assets/gif/run.gif" />
+    <script type="text/javascript" src="./lib/gifler.js"></script>
+    <script type="text/javascript" src="./index.js"></script>
+</body>
+
+</html>

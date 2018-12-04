@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="content-language" content="en-EN" />
+    <link rel="stylesheet" href="../app.css">
+</head>
+
+<body>
+    <main>
+        <script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/dist/GlslCanvas.js"></script>
+        <div id="loading">
+            <p>CAMERA LOADING</p>
+        </div>
+        <div id="permission">
+            <p>PLEASE ALLOW CAMERA ACCESS</p>
+        </div>
+        <div id="content">
+            <p>original : </p>
+            <video id="video" playsinline></video>
+            <p class="filter_name">filter : None</p>
+            <canvas id="output"></canvas>
+            <div id="buttons">
+                <button data-shader="gl_FragColor = vec4(color, 1.0);">None</button>
+                <button data-shader="gl_FragColor = vec4(color * vec3(0.9, 0.0, 1.0), 1.0);">Purple</button>
+                <button data-shader="gl_FragColor = vec4(color * vec3(1.5, 1.5, 0.0), 1.0);">Yellow</button>
+                <button data-shader="color = smoothstep(vec3(0.2), vec3(0.8), color); gl_FragColor = vec4(color, 1.0);">High
+                    Contrast</button>
+                <button data-shader="gl_FragColor = vec4(vec3(1.0) - color, 1.0);">Invert</button>
+                <button data-shader="color += vec3(sin(4.5 * u_time), sin(3.1 * u_time + 1.0), sin(2.7 * u_time)); gl_FragColor = vec4(color, 1.0);">Rave</button>
+            </div>
+        </div>
+    </main>
+    <script type="text/javascript" src="index.js"></script>
+</body>
+
+</html>

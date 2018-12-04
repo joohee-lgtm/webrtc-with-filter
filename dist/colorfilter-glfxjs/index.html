@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="content-language" content="en-EN" />
+    <link rel="stylesheet" href="../app.css">
+</head>
+
+<body>
+    <style>
+        #video, #buffer {
+            display: none;
+        }
+    </style>
+    <!-- Either include the full CamanJS code including plugins -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/camanjs/4.1.2/caman.full.js"></script>
+    <main>
+        <div id="loading">
+            <p>CAMERA LOADING</p>
+        </div>
+        <div id="permission">
+            <p>PLEASE ALLOW CAMERA ACCESS</p>
+        </div>
+        <div id="content">
+            <video id="video" playsinline></video>
+            <canvas id="buffer" ></canvas>
+            <canvas id="output"></canvas>
+        </div>
+    </main>
+    <script type="text/javascript" src="index.js"></script>
+</body>
+
+</html>
