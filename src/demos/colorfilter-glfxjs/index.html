@@ -8,6 +8,11 @@
 </head>
 
 <body>
+    <style>
+        #video, #buffer {
+            display: none;
+        }
+    </style>
     <!-- Either include the full CamanJS code including plugins -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/camanjs/4.1.2/caman.full.js"></script>
     <main>
@@ -18,11 +23,8 @@
             <p>PLEASE ALLOW CAMERA ACCESS</p>
         </div>
         <div id="content">
-            <p>video : </p>
             <video id="video" playsinline></video>
-            <p>buffer : </p>
-            <canvas id="buffer"></canvas>
-            <p>output : </p>
+            <canvas id="buffer" ></canvas>
             <canvas id="output"></canvas>
         </div>
     </main>

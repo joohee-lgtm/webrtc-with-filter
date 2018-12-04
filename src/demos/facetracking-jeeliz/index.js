@@ -11,6 +11,7 @@ function main(){
             }
 
             console.log('INFO : JEEFACEFILTERAPI IS READY');
+            document.querySelector("#loading").style.display = "none";
             CVD = JEEFACEFILTERAPI.Canvas2DDisplay(spec);
             CVD.ctx.strokeStyle='yellow';
         }, //end callbackReady()

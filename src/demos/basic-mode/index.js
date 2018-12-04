@@ -1,63 +1,46 @@
-
-let video;
+import { 
+    getUserMediaPromise,
+    getMediaElement,
+    getGuideElement,
+} from '../util';
+let output;
 
 function handleSuccess(stream) {
-    video = document.querySelector('video');
-    video.srcObject = stream;
+    const {content} = getGuideElement();
+    const {video, output: o} = getMediaElement();
 
-    render();
+    output = o;
+    content.style.display = "block";
+    video.srcObject = stream;
+    video.oncanplay = render;
 }
 
-const output = document.getElementById("output");
 function render() {
-    const context = output.getContext("2d");
+    const outputContext = output.getContext("2d");
     
-    context.drawImage(video, 0,0);
+    output.width = video.videoWidth;
+    output.height = video.videoHeight;
+    outputContext.translate(video.videoWidth, 0);
+    outputContext.scale(-1, 1);  
+    outputContext.drawImage(video, 0,0);
 
     requestAnimationFrame(render);
 }
 
-function handleError(error) {
-    if (error.name === 'ConstraintNotSatisfiedError') {
-        let v = constraints.video;
-        errorMsg(`The resolution ${v.width.exact}x${v.height.exact} px is not supported by your device.`);
-    } else if (error.name === 'PermissionDeniedError') {
-        errorMsg('Permissions have not been granted to use your camera and ' +
-            'microphone, you need to allow the page access to your devices in ' +
-            'order for the demo to work.');
-    }
-    errorMsg(`getUserMedia error: ${error.name}`, error);
-}
-
-function errorMsg(msg, error) {
-    const errorElement = document.querySelector('#errorMsg');
-    errorElement.innerHTML += `<p>${msg}</p>`;
-    if (typeof error !== 'undefined') {
-        console.error(error);
-    }
-}
-
-function init(e, constraints) {
-    navigator.mediaDevices.getUserMedia(constraints)
-    .then(function(stream){
-        handleSuccess(stream);
-    })
-}
-
-document.querySelector('#showVideo1').addEventListener('click', function (e) {
-    init(e, {
+document.querySelector('#user').addEventListener('click', function (e) {
+    getUserMediaPromise({
         audio: false,
         video: {
             facingMode: "user"
         }
-    });
+    }).then(handleSuccess)
 });
 
-document.querySelector('#showVideo2').addEventListener('click', function (e) {
-    init(e, {
+document.querySelector('#environment').addEventListener('click', function (e) {
+    getUserMediaPromise({
         audio: false,
         video: {
             facingMode: "environment"
         }
-    });
+    }).then(handleSuccess)
 });

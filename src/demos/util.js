@@ -41,7 +41,7 @@ export const getMediaElement = () => {
     }
 }
 
-export const getUserMediaPromise = () => {
+export const getUserMediaPromise = (constant = {}) => {
     // ref) https://developer.mozilla.org/ko/docs/Web/API/MediaDevices/getUserMedia
     // Older browsers might not implement mediaDevices at all, so we set an empty object first
     if (navigator.mediaDevices === undefined) {
@@ -73,8 +73,9 @@ export const getUserMediaPromise = () => {
         audio: false,
         video: {
             facing: 'user'
-        }
-    })
+        },
+        ...constant
+    });
 }
 
 export const hideGuideContent = () => {

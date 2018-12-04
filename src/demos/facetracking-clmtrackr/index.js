@@ -78,7 +78,10 @@ function strokePath(paths, color) {
   const outputContenxt =  output.getContext('2d');
 
   if (paths.length < 2) {
-    outputContenxt.fillRect(paths[0][0], paths[0][1], 1, 1);
+    outputContenxt.beginPath();
+    outputContenxt.strokeStyle = color;
+    outputContenxt.rect(paths[0][0], paths[0][1], 1, 1);
+    outputContenxt.stroke();
     return ;
   }
 
