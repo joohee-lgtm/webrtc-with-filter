@@ -32,3 +32,6 @@ tmp
 
 # vs code 설정
 .vscode
+
+# gh-pages 에서만 사용
+dist
