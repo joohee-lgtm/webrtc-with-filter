@@ -1,6 +1,10 @@
 /*
 ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
+import { 
+  getUserMediaPromise,
+} from '../util';
+
 import GIF from "gif.js";
 
 const saveButton = document.querySelector('[data-value="gifjs"]');
@@ -17,12 +21,7 @@ const icon = document.getElementById('icon');
 const picka = document.getElementById('picka');
 
 function init() {
-  window.navigator.mediaDevices.getUserMedia({
-    audio: false,
-    video: {
-      facing: 'user'
-    }
-  })
+  getUserMediaPromise()
   .then(setup)
   .catch((err) => console.log('There was an error 😱', err));
 }

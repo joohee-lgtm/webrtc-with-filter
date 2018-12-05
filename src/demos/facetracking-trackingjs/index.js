@@ -10,6 +10,9 @@
 // video.addEventListener('canplay', render);
 
 // requestAnimationFrame 관련 이슈 https://github.com/eduardolundgren/tracking.js/issues/182
+import { 
+    getUserMediaPromise,
+  } from '../util';  
 import throttle from "lodash.throttle";
 
 function render() {
@@ -29,7 +32,7 @@ function render() {
   
 
 function init() {
-    window.navigator.mediaDevices.getUserMedia({
+    getUserMediaPromise({
       audio: false,
       video: {
         facing: 'user'

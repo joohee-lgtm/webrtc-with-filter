@@ -1,6 +1,10 @@
 /*
 ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
+import { 
+  getUserMediaPromise,
+} from '../util';  
+
 
 const video = document.createElement('video');
 const buffer = document.createElement('canvas');
@@ -17,7 +21,7 @@ function init() {
 });
 
   
-  window.navigator.mediaDevices.getUserMedia({
+getUserMediaPromise({
     audio: false,
     video: {
       facing: 'user'
