@@ -1,18 +1,21 @@
 import { 
     getUserMediaPromise,
     getMediaElement,
-    getGuideElement,
+    showContentBlock,
 } from '../util';
 let output;
 
 function handleSuccess(stream) {
-    const {content} = getGuideElement();
     const {video, output: o} = getMediaElement();
 
+    showContentBlock();
     output = o;
-    content.style.display = "block";
     video.srcObject = stream;
-    video.oncanplay = render;
+    video.oncanplay = function() {
+        showContentBlock();
+        render();
+    };
+    video.play();
 }
 
 function render() {
@@ -27,20 +30,25 @@ function render() {
     requestAnimationFrame(render);
 }
 
-document.querySelector('#user').addEventListener('click', function (e) {
+function accessToCamera(e) {
     getUserMediaPromise({
         audio: false,
         video: {
-            facingMode: "user"
+            facingMode: e.target.id,
         }
-    }).then(handleSuccess)
+    }).then(handleSuccess);
+
+    document.querySelector('#user').style.display = "";
+    document.querySelector('#environment').style.display = "";
+    e.target.style.display = "none";
+    document.getElementById("current").innerHTML = `facingMode: ${e.target.id}`;
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    accessToCamera({
+        target: document.querySelector('#user')
+    });
+    document.querySelector('#user').addEventListener('click', accessToCamera);
+    document.querySelector('#environment').addEventListener('click', accessToCamera);
 });
 
-document.querySelector('#environment').addEventListener('click', function (e) {
-    getUserMediaPromise({
-        audio: false,
-        video: {
-            facingMode: "environment"
-        }
-    }).then(handleSuccess)
-});

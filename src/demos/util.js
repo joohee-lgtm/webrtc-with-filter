@@ -78,15 +78,30 @@ export const getUserMediaPromise = (constant = {}) => {
     });
 }
 
-export const hideGuideContent = () => {
+export const showContentBlock = () => {
     const {
         loading,
-        content
+        content,
+        permission
     } = getGuideElement();
 
     loading.style.display = "none";
+    permission.style.display = "none";
     content.style.display = "block";
 }
+
+export const showPermissionError = () => {
+    const {
+        loading,
+        content,
+        permission
+    } = getGuideElement();
+
+    loading.style.display = "hide";
+    permission.style.display = "block";
+    content.style.display = "hide";
+}
+
 
 export const runDefaultSetup = (stream) => {
     const {

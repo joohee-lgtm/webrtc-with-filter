@@ -7,15 +7,23 @@
 </head>
 <body>
 <div id="container">
-    <div id="content" style="display:none">
-        <p>streaming in video tag</p>
-        <video id="video" autoplay playsinline></video>
-        <p>streaming in canvas tag</p>
-        <canvas id="output" autoplay playsinline></canvas>
+    <div id="loading">
+        <p>CAMERA LOADING</p>
     </div>
-    <div>
-        <button id="user">Open facing camera</button>
-        <button id="environment">Open environment camera</button>
+    <div id="permission" style="display:none">
+        <p>PLEASE ALLOW CAMERA ACCESS</p>
+    </div>
+    <div id="content" style="display:none">
+        <code id="current">facingMode: user</code>
+        <p><code>video</code>태그</p>
+        <video id="video" autoplay playsinline></video>
+
+        <p><code>canvas</code>태그 (거울 효과 추가)</p>
+        <canvas id="output" autoplay playsinline></canvas>
+        <div>
+            <button id="user" style="display: none">전면 카메라 열기</button>
+            <button id="environment" >후면 카메라 열기</button>
+        </div>        
     </div>
 </div>
 <script src="./index.js"></script>
