@@ -144,7 +144,7 @@ async function injectConfig() {
   const copyWebpack = [];
 
   targets.forEach(function (dir) {
-    entries[`${dir}/index`] = [`./src/demos/${dir}/index.js`]
+    entries[`${dir}/index`] = [`./src/demos/${dir}/index.js`];
     copyWebpack.push({
       from: `./src/demos/${dir}/lib/*`,
       to: `${dir}/lib/[name].[ext]`,

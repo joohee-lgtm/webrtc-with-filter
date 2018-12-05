@@ -1,3 +1,4 @@
+import "../ua";
 import { 
   getUserMediaPromise,
 } from '../util';  
@@ -5,7 +6,7 @@ import {
 const video = document.getElementById('video');
 const buffer = document.createElement('canvas');
 const canvas = document.getElementById('output');
-let glslCanvas;
+let glslCanvas, text;
 
 let fragColor = `gl_FragColor = vec4(color, 1.0);`;
 

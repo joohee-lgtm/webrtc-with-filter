@@ -88,16 +88,6 @@ export const showNotSupport = () => {
 
     loading.style.display = "none";
     notSupport.style.display = "block";
-    if (notSupport && notSupport.querySelector("video")) {
-        const video = notSupport.querySelector("video");
-        const tempv = document.createElement("video");
-        tempv.width = 400;
-        tempv.autoplay = true;
-        tempv.playsinline = true;
-        tempv.src = video.src;
-        notSupport.append(tempv);
-        notSupport.removeChild(video);
-    }
 }
 
 export const showContentBlock = () => {

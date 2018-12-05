@@ -34,7 +34,7 @@
 <body>
     <main>
         <div id="not_support" style="display: none">
-            <h3>다른 브라우저에서 접근해주세요</h3>
+            <p>현재 브라우저에서는 데모를 지원하지 않습니다.</p>
             <img src="lib/filter.gif" width="100%" />
         </div>
         <div id="loading">
@@ -49,14 +49,9 @@
             <button class="reset">reset</button>
         </div>
         <div>
-            <h4><code> CanvasRenderingContext2D.filter</code>를 사용 가능한 브라우저</h4>
-            <ul>
-                <li>(M) Samsung Internet 6.0 이상</li> 
-                <li>(PC/M) Safari (미지원)</li>
-                <li>(PC/M) Chrome 52 이상</li>
-                <li>(PC/M) Firefox 49 이상</li>
-            </ul>
-            
+            <h4><code> CanvasRenderingContext2D.filter</code> 을 사용 가능한 브라우저</h4>
+            <ul class="support" data-value="canvas2dfilter"></ul>
+            <p id="ua"></p>
         </div>    
     </main>
     <script type="text/javascript" src="index.js"></script>
