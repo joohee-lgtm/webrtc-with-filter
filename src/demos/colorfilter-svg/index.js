@@ -1,6 +1,7 @@
 /*
 ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
+import "../ua";
 import { 
   getUserMediaPromise,
 } from '../util';  

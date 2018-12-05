@@ -1,3 +1,4 @@
+import "../ua";
 import {
   installMediaDevice,
   getMediaElement

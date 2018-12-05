@@ -16,9 +16,10 @@
             <p>PLEASE ALLOW CAMERA ACCESS</p>
         </div>
         <div id="content">
-            <video id="video" playsinline style="display:none"></video>
+            <p><code>video</code>태그 - (1)</p>
+            <video id="video" playsinline ></video>
+            <p><code>canvas</code>태그 (거울 / gif 이미지 추가) - (2)</p>
             <canvas id="output"></canvas>
-            <img id="preview"></canvas>
             <style>
                 button::after {
                     content: " Start"
@@ -28,12 +29,19 @@
                 }
             </style>
             <div>
-                <button data-value="canvasstream">record cavas stream</button>
+                <p>스트리밍 되고 있는 비디오(1)를 녹화한 후 webm 파일로 재생</p>
+                <button data-value="canvasstream">캔버스 레코딩</button>
             </div>
             <div>
-                <button data-value="videostream">record video stream</button>
+                <p>스트리밍 되고 있는 캔버스(2)를 녹화한 후 webm 파일로 재생</p>
+                <button data-value="videostream">비디오 레코딩</button>
             </div>
 
+        </div>
+        <div>
+                <h4><code> MediaRecorder </code> 을 사용 가능한 브라우저</h4>
+                <ul class="support" data-value="mediarecorder"></ul>
+                <p id="ua"></p>        
         </div>
         <canvas style="display:none" id="icon"></canvas>
     </main>
