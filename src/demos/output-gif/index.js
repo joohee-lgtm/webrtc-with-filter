@@ -1,6 +1,7 @@
 /*
 ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
+import "../ua";
 import { 
   getUserMediaPromise,
 } from '../util';
@@ -9,7 +10,6 @@ import GIF from "gif.js";
 
 const saveButton = document.querySelector('[data-value="gifjs"]');
 const saveCCaptureButtons = document.querySelectorAll('.ccapture');
-const saveMP4Button = document.querySelector('.ffmpegserver');
 const startRecordingButton = document.querySelector('.record_start');
 const stopRecordingButton = document.querySelector('.record_stop');
 
@@ -47,7 +47,7 @@ function setup(stream) {
 
   startRecordingButton.addEventListener('click', startRecording);
   stopRecordingButton.addEventListener('click', stopRecording);
-  saveMP4Button.addEventListener('click', saveMP4);
+  // saveMP4Button.addEventListener('click', saveMP4);
   saveButton.addEventListener('click', save);
   [...saveCCaptureButtons].forEach(function(btn) {
     btn.addEventListener('click', saveUseCCapture.bind(this, btn.dataset.value));

@@ -5,7 +5,8 @@ const support_map = {
     // https://caniuse.com/#feat=webgl
     webgl : {"IE":"11","Edge":"12","Firefox":"4","Chrome":"8","Safari":"5.1","iOS Safari":"8","Android Browser":"67","Chrome for Android":"70", "Samsung Internet":"4"},
     canvas2dfilter : {"IE":null,"Edge":"?","Firefox":"49","Chrome":"52","Safari":null,"iOS Safari":null,"Android Browser":"?","Chrome for Android":"52", "Samsung Internet":"6"},
-    mediarecorder : {"IE":null,"Edge":null,"Firefox":"29","Chrome":"49","Safari":null,"iOS Safari":null,"Android Browser":null,"Chrome for Android":"70","Samsung Internet":"5"}
+    mediarecorder : {"IE":null,"Edge":null,"Firefox":"29","Chrome":"49","Safari":null,"iOS Safari":null,"Android Browser":null,"Chrome for Android":"70","Samsung Internet":"5"},
+    webm: {"IE":null,"Edge":null,"Firefox":"28","Chrome":"25","Safari":null,"iOS Safari":null,"Android Browser":"67","Chrome for Android":"70","Samsung Internet":"5"}
 }
 
 function showUserBrowser() {

@@ -20,22 +20,26 @@
             <canvas id="output"></canvas>
             <img id="preview"></canvas>
             <div>
-                    <p>record video</p>
-                    <button class="record_start">recording start</button>
-                    <button disabled class="record_stop">recording stop</button>
-                    <p class="record_status"></p>
+                <p>비디오 녹화하기</p>
+                <button class="record_start">ccapture format: webm - recording start</button>
+                <button disabled class="record_stop">ccapture format: webm - recording stop</button>
+                <p class="record_status"></p>
             </div>
             <div>
-                <p>record snapshot</p>
+                <p>사진찍기</p>
                 <button data-value="gifjs">gif(gif.js)</button>
                 <button data-value="webm" class="ccapture">ccapture format: webm</button>
                 <button data-value="gif" class="ccapture">ccapture format: gif</button>
                 <button data-value="png" class="ccapture">ccapture format: png</button>
-                <button data-value="png" class="ffmpegserver">ccapture format: ffmpegserver</button>
             </div>
         </div>
         <canvas style="display:none" id="icon"></canvas>
         <img id="picka" width="0" height="0" src="https://themadcreator.github.io/gifler/assets/gif/run.gif" />
+        <div>
+                <h4><code> webm </code> 비디오 포맷을 사용 가능한 브라우저</h4>
+                <ul class="support" data-value="webm"></ul>
+                <p id="ua"></p>
+            </div>            
     </main>
     <script type="text/javascript" src="./lib/gifler.js"></script>
     <script type="text/javascript" src="./lib/CCapture.all.min.js"></script>
