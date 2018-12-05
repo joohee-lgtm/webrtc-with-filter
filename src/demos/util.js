@@ -21,8 +21,10 @@ export const getGuideElement = () => {
     let loading = getById('loading');
     let permission = getById('permission');
     let content = getById('content');
+    let notSupport = getById('not_support');
 
     return {
+        notSupport,
         loading,
         permission,
         content
@@ -33,6 +35,7 @@ export const getMediaElement = () => {
     let video = getById("video", "video");
     let ouput = getById("output", "canvas");
     let buffer = getById("buffer", "canvas");
+    
 
     return {
         video,
@@ -77,6 +80,25 @@ export const getUserMediaPromise = (constant = {}) => {
         ...constant
     });
 }
+export const showNotSupport = () => {
+    const {
+        loading,
+        notSupport
+    } = getGuideElement();
+
+    loading.style.display = "none";
+    notSupport.style.display = "block";
+    if (notSupport && notSupport.querySelector("video")) {
+        const video = notSupport.querySelector("video");
+        const tempv = document.createElement("video");
+        tempv.width = 400;
+        tempv.autoplay = true;
+        tempv.playsinline = true;
+        tempv.src = video.src;
+        notSupport.append(tempv);
+        notSupport.removeChild(video);
+    }
+}
 
 export const showContentBlock = () => {
     const {
@@ -111,7 +133,7 @@ export const runDefaultSetup = (stream) => {
     } = getMediaElement();
 
     video.addEventListener("canplay", function () {
-        hideGuideContent();
+        showContentBlock();
 
         buffer.width = output.width = video.videoWidth;
         buffer.height = output.height = video.videoHeight;

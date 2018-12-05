@@ -4,6 +4,7 @@ import {
   getDecorateText
 } from "./filterGuiService";
 import {
+  showNotSupport,
   installMediaDevice,
   getMediaElement,
 } from "../util";
@@ -15,7 +16,7 @@ function decorateTextItem() {
 
   outputContext.font = "900 60px sans-serif";
   outputContext.fillStyle = "#555588d6";
-  outputContext.lineWidth = 30;
+  outputContext.lineWidth = 20;
   outputContext.strokeStyle = "#555588d6";
   outputContext.fillText(getDecorateText(),26,video.videoHeight-27);
   outputContext.beginPath();
@@ -55,6 +56,12 @@ function canplay() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
+  const ctx = document.createElement("canvas").getContext("2d");
+  if (ctx.filter === undefined) {
+    showNotSupport();
+    return ;
+  }
+  
   video.addEventListener('canplay', canplay);
   installMediaDevice();
 });

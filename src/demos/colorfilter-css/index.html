@@ -19,10 +19,13 @@
             position: absolute;
             left: 0;
             right: 0;
+            top: 0;
+            bottom: 0;
         }
 
         .filter_value button:hover::before{
-            background: red;
+            background: #1a1a1a;
+            color: #eee;
             content: "remove";
         }
     </style>
@@ -30,6 +33,10 @@
 
 <body>
     <main>
+        <div id="not_support" style="display: none">
+            <h3>다른 브라우저에서 접근해주세요</h3>
+            <img src="lib/filter.gif" width="100%" />
+        </div>
         <div id="loading">
             <p>CAMERA LOADING</p>
         </div>
@@ -41,6 +48,16 @@
             <p class="filter_value"></p>
             <button class="reset">reset</button>
         </div>
+        <div>
+            <h4><code> CanvasRenderingContext2D.filter</code>를 사용 가능한 브라우저</h4>
+            <ul>
+                <li>(M) Samsung Internet 6.0 이상</li> 
+                <li>(PC/M) Safari (미지원)</li>
+                <li>(PC/M) Chrome 52 이상</li>
+                <li>(PC/M) Firefox 49 이상</li>
+            </ul>
+            
+        </div>    
     </main>
     <script type="text/javascript" src="index.js"></script>
 </body>
