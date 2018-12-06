@@ -1,6 +1,6 @@
 import "../ua";
 import { 
-  getUserMediaPromise,
+  getUserMediaPromise, showPermissionError,
 } from '../util';  
 
 const video = document.getElementById('video');
@@ -18,7 +18,7 @@ function init() {
     }
   })
   .then(setup)
-  .catch((err) => console.log('There was an error 😱', err));
+  .catch(showPermissionError);
 }
 
 function setup(stream) {

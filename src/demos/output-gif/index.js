@@ -3,7 +3,7 @@ ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
 import "../ua";
 import { 
-  getUserMediaPromise,
+  getUserMediaPromise, showPermissionError,
 } from '../util';
 
 import GIF from "gif.js";
@@ -23,7 +23,7 @@ const picka = document.getElementById('picka');
 function init() {
   getUserMediaPromise()
   .then(setup)
-  .catch((err) => console.log('There was an error 😱', err));
+  .catch(showPermissionError);
 }
 
 let gifFrames = [];

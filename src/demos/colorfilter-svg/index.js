@@ -3,7 +3,7 @@ ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
 import "../ua";
 import { 
-  getUserMediaPromise,
+  getUserMediaPromise, showPermissionError,
 } from '../util';  
 
 
@@ -29,7 +29,7 @@ getUserMediaPromise({
     }
   })
   .then(setup)
-  .catch((err) => console.log('There was an error 😱', err));
+  .catch(showPermissionError);
 }
 
 function setup(stream) {

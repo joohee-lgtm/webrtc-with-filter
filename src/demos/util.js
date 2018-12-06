@@ -109,9 +109,9 @@ export const showPermissionError = () => {
         permission
     } = getGuideElement();
 
-    loading.style.display = "hide";
+    loading.style.display = "none";
     permission.style.display = "block";
-    content.style.display = "hide";
+    content.style.display = "none";
 }
 
 

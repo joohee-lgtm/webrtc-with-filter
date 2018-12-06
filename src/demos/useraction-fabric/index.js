@@ -1,6 +1,7 @@
 /*
 ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
+
 import {
   installMediaDevice,
   getMediaElement,
@@ -22,7 +23,6 @@ function render() {
   bufferContext.scale(-1, 1);
 
   // 화면 그리기
-  bufferContext.filter = "blur(15px)"
   bufferContext.drawImage(video, 0, 0);
   outputContext.drawImage(buffer, 0, 0);
 

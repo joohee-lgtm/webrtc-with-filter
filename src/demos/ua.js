@@ -2,6 +2,7 @@ import UAParser from "ua-parser-js";
 
 
 const support_map = {
+    getusermedia: {"IE":null,"Edge":"12","Firefox":"36","Chrome":"53","Safari":"11","iOS Safari":"11.2","Android Browser":"67","Chrome for Android":"70","Samsung Internet":"6.2"},
     // https://caniuse.com/#feat=webgl
     webgl : {"IE":"11","Edge":"12","Firefox":"4","Chrome":"8","Safari":"5.1","iOS Safari":"8","Android Browser":"67","Chrome for Android":"70", "Samsung Internet":"4"},
     canvas2dfilter : {"IE":null,"Edge":"?","Firefox":"49","Chrome":"52","Safari":null,"iOS Safari":null,"Android Browser":"?","Chrome for Android":"52", "Samsung Internet":"6"},

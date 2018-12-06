@@ -1,4 +1,6 @@
+import "../ua";
 import { 
+    showPermissionError,
     getUserMediaPromise,
     getMediaElement,
     showContentBlock,
@@ -16,6 +18,10 @@ function handleSuccess(stream) {
         render();
     };
     video.play();
+}
+
+function handleReject() {
+    showPermissionError();
 }
 
 function render() {
@@ -36,7 +42,9 @@ function accessToCamera(e) {
         video: {
             facingMode: e.target.id,
         }
-    }).then(handleSuccess);
+    })
+    .then(handleSuccess)
+    .catch(handleReject);
 
     document.querySelector('#user').style.display = "";
     document.querySelector('#environment').style.display = "";
