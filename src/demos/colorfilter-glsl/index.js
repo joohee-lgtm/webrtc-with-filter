@@ -44,7 +44,7 @@ function render() {
   var dataURL = buffer.toDataURL();
   glslCanvas.setUniform('u_texture', dataURL);
   
-  window.requestAnimationFrame(render);
+  // window.requestAnimationFrame(render);
 }
 
 function update() {
@@ -85,7 +85,10 @@ video.addEventListener('canplay', function(){
     glslCanvas = new GlslCanvas(canvas);
     update();
   }
-  render();
+
+  setInterval(function() {
+    render();
+  }, 100);
 });
 
 [...document.getElementById('buttons').children].forEach(button => {
