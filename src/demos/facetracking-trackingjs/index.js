@@ -26,6 +26,9 @@ window.plot = function (x, y, w, h) {
 };
 
 function trackHandler(event) {
+  const canvas = document.getElementById('canvas');
+  const context = canvas.getContext('2d');
+
   event.data.forEach(function (rect) {
     context.strokeStyle = '#a64ceb';
     context.strokeRect(rect.x, rect.y, rect.width, rect.height);
@@ -46,7 +49,6 @@ function initTraker() {
     document.querySelector("#loading").style.display = "none";
     document.querySelector("#content").style.display = "block";
   });
-
   tracker.setStepSize(1.7);
   tracking.track('#video', tracker, {
     camera: true
