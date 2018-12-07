@@ -1,3 +1,4 @@
+import "../ua";
 import glfx from "glfx";
 import {
   installMediaDevice,

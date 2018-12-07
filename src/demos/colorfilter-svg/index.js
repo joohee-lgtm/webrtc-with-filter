@@ -1,6 +1,11 @@
 /*
 ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
+import "../ua";
+import { 
+  getUserMediaPromise, showPermissionError,
+} from '../util';  
+
 
 const video = document.createElement('video');
 const buffer = document.createElement('canvas');
@@ -17,14 +22,14 @@ function init() {
 });
 
   
-  window.navigator.mediaDevices.getUserMedia({
+getUserMediaPromise({
     audio: false,
     video: {
       facing: 'user'
     }
   })
   .then(setup)
-  .catch((err) => console.log('There was an error 😱', err));
+  .catch(showPermissionError);
 }
 
 function setup(stream) {

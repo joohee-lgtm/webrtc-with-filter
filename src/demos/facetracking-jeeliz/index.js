@@ -1,4 +1,5 @@
 "use strict";
+import { showPermissionError, getMediaElement } from '../util';
 function main(){
     window.CVD = null;
     JEEFACEFILTERAPI.init({
@@ -6,7 +7,11 @@ function main(){
         NNCpath: 'https://appstatic.jeeliz.com/faceFilter/NNC.json', //root of NNC.json file
         callbackReady: function(errCode, spec){
             if (errCode){
-                console.log('AN ERROR HAPPENS. SORRY BRO :( . ERR =', errCode);
+                const {output} = getMediaElement();
+
+                showPermissionError();
+                output.style.display = "none";
+                
                 return;
             }
 

@@ -1,19 +1,24 @@
+import "../ua";
+import { 
+  getUserMediaPromise, showPermissionError,
+} from '../util';  
+
 const video = document.getElementById('video');
 const buffer = document.createElement('canvas');
 const canvas = document.getElementById('output');
-let glslCanvas;
+let glslCanvas, text;
 
 let fragColor = `gl_FragColor = vec4(color, 1.0);`;
 
 function init() {
-  window.navigator.mediaDevices.getUserMedia({
+  getUserMediaPromise({
     audio: false,
     video: {
       facing: 'user'
     }
   })
   .then(setup)
-  .catch((err) => console.log('There was an error 😱', err));
+  .catch(showPermissionError);
 }
 
 function setup(stream) {
@@ -39,7 +44,7 @@ function render() {
   var dataURL = buffer.toDataURL();
   glslCanvas.setUniform('u_texture', dataURL);
   
-  window.requestAnimationFrame(render);
+  // window.requestAnimationFrame(render);
 }
 
 function update() {
@@ -80,7 +85,10 @@ video.addEventListener('canplay', function(){
     glslCanvas = new GlslCanvas(canvas);
     update();
   }
-  render();
+
+  setInterval(function() {
+    render();
+  }, 100);
 });
 
 [...document.getElementById('buttons').children].forEach(button => {

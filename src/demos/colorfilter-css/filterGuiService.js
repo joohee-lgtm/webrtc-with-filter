@@ -1,7 +1,7 @@
 import dat from "dat.gui";
 
 const canvasFilterValue = document.querySelector('.filter_value');
-const gui = new dat.GUI();
+let gui;
 const resetButton = document.querySelector('.reset');
 
 let canvasText = 'Hello WebRTC!';
@@ -21,6 +21,7 @@ let filters = {
 }
 
 export function initGUI() {
+    gui = new dat.GUI()
     resetButton.addEventListener("click", reset);
     const filterName = Object.keys(filters);
     
