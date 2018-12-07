@@ -3,7 +3,7 @@ ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
 import "../ua";
 import { 
-  getUserMediaPromise, showPermissionError,
+  getUserMediaPromise, showPermissionError, notSupportWebm,
 } from '../util';
 
 import GIF from "gif.js";
@@ -51,7 +51,8 @@ function setup(stream) {
   saveButton.addEventListener('click', save);
   [...saveCCaptureButtons].forEach(function(btn) {
     btn.addEventListener('click', saveUseCCapture.bind(this, btn.dataset.value));
-  })
+  });
+  
 }
 
 const webmCapture = new CCapture({
@@ -89,7 +90,6 @@ function stopRecording() {
   webmCapture.save();    
 }
 
-
 function showVideoLink(url, size) {
   size = size ? (" [size: " + (size / 1024 / 1024).toFixed(1) + "meg]") : " [unknown size]";
   var a = document.createElement("a");
@@ -114,7 +114,7 @@ function saveMP4(){
 
   const capturer = new CCapture({
     format: 'ffmpegserver',
-    framerate: 10,
+    framerate: 30,
     verbose: true,
     name: "foobar",     // videos will be named foobar-#.mp4, untitled if not set.
     extension: ".mp4",  // extension for file. default = ".mp4"
@@ -136,7 +136,7 @@ function saveMP4(){
   const tempRenderer = function(){
     if (i < gifFrames.length) {
       tempContext.drawImage(buffer, 0, 0);
-      tempContext.drawImage(gifFrames[i].buffer, 0, 0);
+      tempContext.drawImage(gifFrames[i].buffer, 0, output.height - icon.height, icon.width, icon.height);
       tempContext.restore();
       capturer.capture(temp);  
       i++;
@@ -151,6 +151,7 @@ function saveMP4(){
 }
 
 function saveUseCCapture(format) {
+
   const temp = document.createElement('canvas');
   const tempContext = temp.getContext('2d');
   const capturer = new CCapture({
@@ -166,19 +167,19 @@ function saveUseCCapture(format) {
   capturer.start();
 
   tempContext.drawImage(buffer, 0, 0);
-  tempContext.drawImage(gifFrames[0].buffer, 0, 0);
+  tempContext.drawImage(gifFrames[0].buffer, 0, output.height - icon.height, icon.width, icon.height);
   capturer.capture(temp);
 
   tempContext.drawImage(buffer, 0, 0);
-  tempContext.drawImage(gifFrames[1].buffer, 0, 0);
+  tempContext.drawImage(gifFrames[1].buffer, 0, output.height - icon.height, icon.width, icon.height);
   capturer.capture(temp);
 
   tempContext.drawImage(buffer, 0, 0);
-  tempContext.drawImage(gifFrames[2].buffer, 0, 0);
+  tempContext.drawImage(gifFrames[2].buffer, 0, output.height - icon.height, icon.width, icon.height);
   capturer.capture(temp);
 
   tempContext.drawImage(buffer, 0, 0);
-  tempContext.drawImage(gifFrames[3].buffer, 0, 0);
+  tempContext.drawImage(gifFrames[3].buffer, 0, output.height - icon.height, icon.width, icon.height);
   capturer.capture(temp);
 
   capturer.stop();
@@ -191,7 +192,7 @@ function save() {
   const gif = new GIF({
     workers: 1,
     workerScript: './lib/gif.worker.js',
-    quality: 30,
+    quality: 100,
     width: buffer.width,
     height: buffer.height
   });
@@ -199,27 +200,25 @@ function save() {
   temp.width = buffer.width;
   temp.height = buffer.height;
 
-  // gifFrames[0].buffer.width = icon.width;
-  // gifFrames[0].buffer.height = icon.height;
   const gifOption = {
     delay: 70, // TODO delay from original gif
     copy: true
   }
   
   tempContext.drawImage(buffer, 0, 0);
-  tempContext.drawImage(gifFrames[0].buffer, 0, 0);
+  tempContext.drawImage(gifFrames[0].buffer, 0, output.height - icon.height, icon.width, icon.height);
   gif.addFrame(tempContext, gifOption);
 
   tempContext.drawImage(buffer, 0, 0);
-  tempContext.drawImage(gifFrames[1].buffer, 0, 0);
+  tempContext.drawImage(gifFrames[1].buffer, 0, output.height - icon.height, icon.width, icon.height);
   gif.addFrame(tempContext, gifOption);
 
   tempContext.drawImage(buffer, 0, 0);
-  tempContext.drawImage(gifFrames[2].buffer, 0, 0);
+  tempContext.drawImage(gifFrames[2].buffer, 0, output.height - icon.height, icon.width, icon.height);
   gif.addFrame(tempContext, gifOption);
 
   tempContext.drawImage(buffer, 0, 0);
-  tempContext.drawImage(gifFrames[3].buffer, 0, 0);
+  tempContext.drawImage(gifFrames[3].buffer, 0, output.height - icon.height, icon.width, icon.height);
   gif.addFrame(tempContext, gifOption);
   
   gif.on('finished', function(blob) {
@@ -256,6 +255,16 @@ function render() {
 };
 
 document.addEventListener("DOMContentLoaded", function(){
+  if (notSupportWebm()) {
+      const webmSnapshotButton = document.querySelector(".ccapture[data-value='webm']");
+      const webmVideoRecordButton = document.querySelector(".record_start");
+      const webmSupport = document.querySelector("#webm_support");
+
+      webmSupport.style.display = "block";
+      webmVideoRecordButton.disabled = true;
+      webmSnapshotButton.disabled = true;
+    }
+  
   init();
   video.addEventListener('canplay', function(){
     document.getElementById('loading').style.display = 'none';  
