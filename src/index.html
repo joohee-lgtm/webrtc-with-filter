@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta http-equiv="content-language" content="en-EN" />
-    </head>
-    <body>
-        <h2>WebRTC <code>getUserMedia()</code> with filter</h2>
-        <% htmlWebpackPlugin.options.demos.forEach(function(preset){ %>
-            <h3><%= preset[0] %></h3> 
-            <ul>
-                <% preset[1].forEach(function(sub){ %>
-                    <li><a href="./<%= preset[0] %>-<%= sub %>/index.html"><%= sub %></a> </li>
-                <%})%>
-            </ul>
-        <% }); %>
-    </body>
+  <head>
+    <title>webRTC-with-filter</title>
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"
+    />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+    <h2>WebRTC <code>getUserMedia()</code> with filter</h2>
+    <% htmlWebpackPlugin.options.demos.forEach(function(preset){ %>
+    <h3><%= preset[0] %></h3>
+    <ul>
+      <% preset[1].forEach(function(sub){ %>
+        <li><a href="./<%= preset[0] %>-<%= sub %>/index.html"><%= sub %></a> </li>
+        <%})%>
+    </ul>
+    <% }); %>
+  </body>
 </html>

@@ -1,72 +1,73 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="content-language" content="en-EN" />
-    <link rel="stylesheet" href="../app.css">
-    <style>
-        #webm_support {
-            display: none;
-            font-weight: 700;
-            color : red;
-        }
-    </style>
-</head>
-
-<body>
-    <main>
-        <div id="loading">
+   <head>
+      <title>webRTC-with-filter</title>
+      <meta
+         name="viewport"
+         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"
+         />
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   </head>
+   <body>
+      <main>
+         <div id="loading">
             <p>CAMERA LOADING</p>
-        </div>
-        <div id="permission">
+         </div>
+         <div id="permission">
             <p>PLEASE ALLOW CAMERA ACCESS</p>
-        </div>
-        <div id="content">
+         </div>
+         <div id="content">
             <video id="video" playsinline style="display:none"></video>
             <canvas id="output"></canvas>
             <img id="preview"></canvas>
             <div id="webm_support">
-                현재 브라우저는 webm 비디오 포맷 재생을 지원하지 않습니다.
+               현재 브라우저는 webm 비디오 포맷 재생을 지원하지 않습니다.
             </div>
             <div>
-                <p>ccapture 라이브러리로 비디오 녹화하기 (webm 파일로 저장) ex. <img src="./lib/video.gif" height="200"></p>
-                <button class="record_start">recording start</button>
-                <button disabled class="record_stop">recording stop</button>
-                <p class="record_status"></p>
+               <p>ccapture 라이브러리로 비디오 녹화하기 (webm 파일로 저장) ex. <img src="./lib/video.gif" height="200"></p>
+               <button class="record_start">recording start</button>
+               <button disabled class="record_stop">recording stop</button>
+               <p class="record_status"></p>
             </div>
             <div>
-                <p>사진찍기 ex. <img src="./lib/snapshot.gif" height="200"></p>
-                <p>
-                    gif.js 라이브러리로 gif 아이콘이 추가된 사진 찍기  <br>
-                    <button data-value="gifjs">gif 파일로 저장 (sevice worker 사용)</button>
-                </p>
-                <p>
-                    ccapture 라이브러리로 gif 아이콘이 추가된 사진 찍기<br>
-                    <button data-value="gif" class="ccapture">gif 파일로 저장 (sevice worker 사용)</button>
-                    <button data-value="webm" class="ccapture">webm 파일로 저장</button>
-                </p>
+               <p>사진찍기 ex. <img src="./lib/snapshot.gif" height="200"></p>
+               <p>
+                  gif.js 라이브러리로 gif 아이콘이 추가된 사진 찍기  <br>
+                  <button data-value="gifjs">gif 파일로 저장 (sevice worker 사용)</button>
+               </p>
+               <p>
+                  ccapture 라이브러리로 gif 아이콘이 추가된 사진 찍기<br>
+                  <button data-value="gif" class="ccapture">gif 파일로 저장 (sevice worker 사용)</button>
+                  <button data-value="webm" class="ccapture">webm 파일로 저장</button>
+               </p>
             </div>
-        </div>
-        <canvas style="display:none" id="icon"></canvas>
-        <img id="picka" width="0" height="0" src="https://themadcreator.github.io/gifler/assets/gif/run.gif" />
-        <div>
+         </div>
+         <canvas style="display:none" id="icon"></canvas>
+         <img id="picka" width="0" height="0" src="https://themadcreator.github.io/gifler/assets/gif/run.gif" />
+         <div>
             <h4><code> webm </code> 비디오 포맷을 사용 가능한 브라우저</h4>
             <ul class="support" data-value="webm"></ul>
             <h4><code> ServiceWorker </code> 를 사용 가능한 브라우저</h4>
             <ul class="support" data-value="serviceworker"></ul>
             <p id="ua"></p>
-        </div>
-    </main>
-    <script type="text/javascript" src="./lib/gifler.js"></script>
-    <script type="text/javascript" src="./lib/CCapture.all.min.js"></script>
-    <script>
-        function failServerAccess() {
-            document.querySelector("#serverSocketScript").className = "load_fail";
-        }
-    </script>
-    <!-- <script id="serverSocketScript" src="http://localhost:8080/ffmpegserver/ffmpegserver.js" onerror="failServerAccess()"></script> -->
-    <script type="text/javascript" src="./index.js"></script>
-</body>
-
+         </div>
+      </main>
+      <link rel="stylesheet" href="../app.css">
+      <style>
+         #webm_support {
+         display: none;
+         font-weight: 700;
+         color : red;
+         }
+      </style>
+      <script type="text/javascript" src="./lib/gifler.js"></script>
+      <script type="text/javascript" src="./lib/CCapture.all.min.js"></script>
+      <script>
+         function failServerAccess() {
+             document.querySelector("#serverSocketScript").className = "load_fail";
+         }
+      </script>
+      <!-- <script id="serverSocketScript" src="http://localhost:8080/ffmpegserver/ffmpegserver.js" onerror="failServerAccess()"></script> -->
+      <script type="text/javascript" src="./index.js"></script>
+   </body>
 </html>
