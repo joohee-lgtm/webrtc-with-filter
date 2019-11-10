@@ -30,34 +30,34 @@ const config = {
   watch: true,
   module: {
     rules: [{
-        test: /\.(json|png|jpg|gif)$/,
-        use: [{
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-          }
-        }]
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader"
+      test: /\.(json|png|jpg|gif)$/,
+      use: [{
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+        }
+      }]
+    },
+    {
+      test: /\.js$/,
+      exclude: /node_modules/,
+      use: {
+        loader: "babel-loader"
+      }
+    },
+    {
+      test: /\.css$/,
+      use: [{
+        loader: MiniCssExtractPlugin.loader,
+        options: {
+          // you can specify a publicPath here
+          // by default it use publicPath in webpackOptions.output
+          publicPath: '../'
         }
       },
-      {
-        test: /\.css$/,
-        use: [{
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              // you can specify a publicPath here
-              // by default it use publicPath in webpackOptions.output
-              publicPath: '../'
-            }
-          },
-          "css-loader"
-        ]
-      }
+        "css-loader"
+      ]
+    }
     ]
   },
   plugins: [
@@ -77,7 +77,7 @@ async function getDemos() {
 
     fs.readdirSync(root, {
       withFileTypes: true
-    }).forEach((file) => {
+    }).forEach(({ name: file }) => {
       const stat = fs.statSync(`${root}/${file}`);
       stat.isDirectory() && demos.push(file);
     })

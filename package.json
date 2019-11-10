@@ -11,6 +11,9 @@
     "type": "git",
     "url": "[TODO] ADD YOUR REPOSITORY URL"
   },
+  "engines": {
+    "node": ">=10.13.0"
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
