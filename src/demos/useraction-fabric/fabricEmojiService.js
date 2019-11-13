@@ -30,107 +30,107 @@ function randomInt(min, max) {
 }
 
 
-export function initFabric() {
+export function initFabric({ width, height }) {
   fabricInstance = new fabric.Canvas('fabric', {
-    width: 640,
-    height: 480
+    width,
+    height
   });
   // fix - lower-canvas 가 1280 으로 맞춰지는 이슈 (왜??)
-  fabricInstance.getContext().canvas.width = 640;
-  fabricInstance.getContext().canvas.height = 480;
+  fabricInstance.getContext().canvas.width = width;
+  fabricInstance.getContext().canvas.height = height;
 
   loadSVG();
   bindDeleteAction();
-//   bindAddAction();
+  //   bindAddAction();
   emoji = shuffle(emoji_preset);
   addRandomEmoji();
   addRandomEmoji();
   addRandomEmoji();
 }
 
-  
-  function loadSVG(e) {
-    const target = document.getElementById("delete");
-  
-    fabric.loadSVGFromString(target.outerHTML, function(objects, options) {
-      var svg = fabric.util.groupSVGElements(objects, options);
-      var config = {
-        left: fabricInstance.getWidth() / 2,
-        top: fabricInstance.getHeight() - 30,
-        fill: '#fff',
-        originX: 'center',
-        originY: 'center',
-        selectable: false,
-        hasBorders: false,
-        opacity: 0,
-        hasControls: false,
-        name: "deleteIcon",
-      };
-      svg.set(config);
-      var bg = new fabric.Rect({
-        ...config,
-        width: 50,
-        height: 50,
-        name: "deleteIcon",
-      })
-  
-      svg.scaleToWidth(50);
-      svg.scaleToHeight(50);
-      // svg.hasBorders = svg.hasControls = false;
-      fabricInstance.add(bg, svg).renderAll();
-    });
-  }
-  
-  
-  export function addRandomEmoji(post = {
-    y: randomInt(10, 470), 
-    x: randomInt(10, 630)
-  }) {
-    if (emoji.length < 1) {
-      emoji = shuffle(emoji_preset);
-    }
-    const size = randomInt(25, 50);
-    // const size = 300;
-    const random = new fabric.Textbox(String.fromCodePoint(emoji.pop()), {
-      top: post.y,
-      left: post.x,
-      angle: randomInt(-180, 180),
-      fontSize: size,
+
+function loadSVG(e) {
+  const target = document.getElementById("delete");
+
+  fabric.loadSVGFromString(target.outerHTML, function (objects, options) {
+    var svg = fabric.util.groupSVGElements(objects, options);
+    var config = {
+      left: fabricInstance.getWidth() / 2,
+      top: fabricInstance.getHeight() - 30,
+      fill: '#fff',
+      originX: 'center',
+      originY: 'center',
+      selectable: false,
       hasBorders: false,
+      opacity: 0,
       hasControls: false,
-    });
-    fabricInstance
-      .add(random).renderAll();
-  }
-  
-  function bindDeleteAction() {
-    // http://fabricjs.com/intersection
-    fabricInstance.on({
-      'mouse:down' : function(options) {
-        !options.target && addRandomEmoji(options.pointer);
-      },
-      'object:moving': function(e) {
-        e.target.setCoords();
-        fabricInstance.forEachObject(function(obj) {
-          if (obj === e.target || obj.name !== "deleteIcon") return;
-          obj.set('opacity' ,e.target.intersectsWithObject(obj) ? 0.8 : 0.4);
-        });
-      },
-      'object:moved' : function(e) {
-        e.target.setCoords();
-        const icons = fabricInstance.getObjects().filter(function(obj) {
-          return obj.name === "deleteIcon";
-        });
-        if(e.target.intersectsWithObject(icons[0])) {
-          fabricInstance.remove(e.target);
-        }
-        icons.forEach(function(icon) {
-          icon.set("opacity", 0);
-        })
-      }
+      name: "deleteIcon",
+    };
+    svg.set(config);
+    var bg = new fabric.Rect({
+      ...config,
+      width: 50,
+      height: 50,
+      name: "deleteIcon",
     })
+
+    svg.scaleToWidth(50);
+    svg.scaleToHeight(50);
+    // svg.hasBorders = svg.hasControls = false;
+    fabricInstance.add(bg, svg).renderAll();
+  });
+}
+
+
+export function addRandomEmoji(post = {
+  y: randomInt(10, 470),
+  x: randomInt(10, 630)
+}) {
+  if (emoji.length < 1) {
+    emoji = shuffle(emoji_preset);
   }
-  
-  export function getFabricCanvas() {
-      return fabricInstance.getContext().canvas;
-  }
+  const size = randomInt(25, 50);
+  // const size = 300;
+  const random = new fabric.Textbox(String.fromCodePoint(emoji.pop()), {
+    top: post.y,
+    left: post.x,
+    angle: randomInt(-180, 180),
+    fontSize: size,
+    hasBorders: false,
+    hasControls: false,
+  });
+  fabricInstance
+    .add(random).renderAll();
+}
+
+function bindDeleteAction() {
+  // http://fabricjs.com/intersection
+  fabricInstance.on({
+    'mouse:down': function (options) {
+      !options.target && addRandomEmoji(options.pointer);
+    },
+    'object:moving': function (e) {
+      e.target.setCoords();
+      fabricInstance.forEachObject(function (obj) {
+        if (obj === e.target || obj.name !== "deleteIcon") return;
+        obj.set('opacity', e.target.intersectsWithObject(obj) ? 0.8 : 0.4);
+      });
+    },
+    'object:moved': function (e) {
+      e.target.setCoords();
+      const icons = fabricInstance.getObjects().filter(function (obj) {
+        return obj.name === "deleteIcon";
+      });
+      if (e.target.intersectsWithObject(icons[0])) {
+        fabricInstance.remove(e.target);
+      }
+      icons.forEach(function (icon) {
+        icon.set("opacity", 0);
+      })
+    }
+  })
+}
+
+export function getFabricCanvas() {
+  return fabricInstance.getContext().canvas;
+}

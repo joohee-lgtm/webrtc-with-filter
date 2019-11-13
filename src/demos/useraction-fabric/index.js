@@ -14,18 +14,24 @@ let { video, buffer, output } = getMediaElement();
 
 const saveButton = document.getElementById('save');
 const addButton = document.getElementById('add');
+let videoWidth, videoHeight;
+
 function render() {
   const bufferContext = buffer.getContext('2d');
   const outputContext = output.getContext('2d');
+
   // 거울모드
-  buffer.width = video.videoWidth;
-  buffer.height = video.videoHeight;
-  bufferContext.translate(video.videoWidth, 0);
+  buffer.width = videoWidth;
+  buffer.height = videoHeight;
+  output.width = videoWidth;
+  output.height = videoHeight;
+
+  bufferContext.translate(videoWidth, 0);
   bufferContext.scale(-1, 1);
 
   // 화면 그리기
-  bufferContext.drawImage(video, 0, 0);
-  outputContext.drawImage(buffer, 0, 0);
+  bufferContext.drawImage(video, 0, 0, videoWidth, videoHeight);
+  outputContext.drawImage(buffer, 0, 0, videoWidth, videoHeight);
 
   window.requestAnimationFrame(render);
 }
@@ -36,8 +42,8 @@ export function saveImage() {
   const filmContext = film.getContext('2d');
   const fabric = getFabricCanvas();
 
-  film.width = video.videoWidth;
-  film.height = video.videoHeight;
+  film.width = videoWidth;
+  film.height = videoHeight;
   filmContext.drawImage(output, 0, 0);
   filmContext.drawImage(fabric, 0, 0);
 
@@ -51,8 +57,26 @@ export function saveImage() {
 }
 
 function canplay() {
-  render();
-  initFabric();
+  const id = requestAnimationFrame(function () {
+    const { width, height } = video.getBoundingClientRect();
+
+    videoWidth = width;
+    videoHeight = height;
+    if (width < 1 || height < 1) {
+      return;
+    }
+
+    video.width = width;
+    video.height = height;
+    output.width = width;
+    output.height = height;
+    buffer.width = width;
+    buffer.height = height;
+
+    render();
+    initFabric({ width, height });
+    cancelAnimationFrame(id);
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function () {

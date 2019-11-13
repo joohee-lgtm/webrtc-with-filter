@@ -1,8 +1,11 @@
-video, canvas {
-  border: 1px solid #98DAC6; 
+video,
+canvas {
+  border: 1px solid #98dac6;
+  width: 100%;
 }
 
-#content, #permission {
+#content,
+#permission {
   display: none;
 }
 
@@ -10,4 +13,8 @@ video, canvas {
   display: table-cell;
   height: 64px;
   vertical-align: middle;
+}
+
+button {
+  border: 1px solid grey;
 }

@@ -8,10 +8,9 @@
 // var video = document.getElementById('video');
 // var canvas = document.getElementById('canvas');
 // video.addEventListener('canplay', render);
-
 // requestAnimationFrame 관련 이슈 https://github.com/eduardolundgren/tracking.js/issues/182
 import {
-  installUserMediaAccess, showNotSupport, runDefaultErrorGuide,
+  installUserMediaAccess, runDefaultErrorGuide,
 } from '../util';
 import throttle from "lodash.throttle";
 
@@ -24,6 +23,7 @@ window.plot = function (x, y, w, h) {
   rect.style.left = (img.offsetLeft + x) + 'px';
   rect.style.top = (img.offsetTop + y) + 'px';
 };
+let tracker;
 
 function trackHandler(event) {
   const canvas = document.getElementById('canvas');
@@ -39,24 +39,42 @@ function trackHandler(event) {
   });
 }
 
-function initTracker() {
-  const video = document.getElementById('video');
+function startTracking() {
   const canvas = document.getElementById('canvas');
   const context = canvas.getContext('2d');
-  const tracker = new tracking.ObjectTracker('eye');
 
-  video.addEventListener('canplay', function () {
-    document.querySelector("#loading").style.display = "none";
-    document.querySelector("#content").style.display = "block";
-  });
   tracker.setStepSize(1.7);
-  tracking.track('#video', tracker, {
-    camera: true
-  });
   tracker.on('track', throttle(function (event) {
     context.clearRect(0, 0, canvas.width, canvas.height);
     trackHandler(event);
   }, 500));
+}
+
+function initTracker() {
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  tracker = new tracking.ObjectTracker('eye');
+
+  video.addEventListener('canplay', function () {
+    const id = requestAnimationFrame(function () {
+      const { width, height } = video.getBoundingClientRect();
+
+      if (width < 1 || height < 1) {
+        return;
+      }
+
+      video.width = width;
+      video.height = height;
+      canvas.width = width;
+      canvas.height = height;
+
+      startTracking();
+      cancelAnimationFrame(id);
+    });
+  });
+  tracking.track('#video', tracker, {
+    camera: true
+  });
 }
 
 window.onload = function () {

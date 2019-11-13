@@ -6,7 +6,7 @@ import {
   installUserMediaAccess
 } from "../util";
 
-const gui = new dat.GUI();
+
 const featureColorMap = {
   shape: "#000",
   rightEyePoint: "#000",
@@ -21,9 +21,12 @@ const featureColorMap = {
   noseSide: "#000"
 };
 let { video, output } = getMediaElement();
-let ctrack;
+let ctrack, gui;
 
 function initGUI() {
+  gui = new dat.GUI({ autoPlace: true });
+  document.getElementById('my-gui-container').appendChild(gui.domElement);
+
   const featureNames = Object.keys(featureColorMap);
 
   featureNames.forEach(function (name) {
@@ -61,9 +64,9 @@ function parseFaceModel(f) {
 
 function render() {
   const faceMatch = ctrack.getCurrentPosition();
-  const outputContenxt = output.getContext('2d');
+  const outputContext = output.getContext('2d');
 
-  outputContenxt.clearRect(0, 0, output.width, output.height);
+  outputContext.clearRect(0, 0, output.width, output.height);
 
   if (faceMatch) {
     const parsed = parseFaceModel(faceMatch);
@@ -77,31 +80,47 @@ function render() {
 }
 
 function strokePath(paths, color) {
-  const outputContenxt = output.getContext('2d');
+  const outputContext = output.getContext('2d');
 
   if (paths.length < 2) {
-    outputContenxt.beginPath();
-    outputContenxt.strokeStyle = color;
-    outputContenxt.rect(paths[0][0], paths[0][1], 1, 1);
-    outputContenxt.stroke();
+    outputContext.beginPath();
+    outputContext.strokeStyle = color;
+    outputContext.rect(paths[0][0], paths[0][1], 1, 1);
+    outputContext.stroke();
     return;
   }
 
-  outputContenxt.beginPath();
-  outputContenxt.strokeStyle = color;
-  outputContenxt.moveTo.apply(outputContenxt, paths.shift());
+  outputContext.beginPath();
+  outputContext.strokeStyle = color;
+  outputContext.moveTo.apply(outputContext, paths.shift());
 
-  paths.forEach(point => outputContenxt.lineTo.apply(outputContenxt, point));
-  outputContenxt.stroke();
+  paths.forEach(point => outputContext.lineTo.apply(outputContext, point));
+  outputContext.stroke();
 }
 
 function canplay() {
-  ctrack = new clm.tracker();
-  ctrack.init();
-  ctrack.start(video);
+  const id = window.requestAnimationFrame(function () {
+    const { width, height } = video.getBoundingClientRect();
 
-  initGUI();
-  render();
+    if (width < 1 || height < 1) {
+      return;
+    }
+
+    video.width = width;
+    video.height = height;
+    output.width = width;
+    output.height = height;
+
+    ctrack = new clm.tracker();
+    ctrack.init();
+    ctrack.start(video);
+
+    initGUI();
+    render();
+
+    window.cancelAnimationFrame(id);
+  })
+
 }
 
 document.addEventListener("DOMContentLoaded", function () {
