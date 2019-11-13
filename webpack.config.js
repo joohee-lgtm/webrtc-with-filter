@@ -1,10 +1,12 @@
 const webpack = require("webpack");
+const PostCompile = require('post-compile-webpack-plugin');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebpackCleanupPlugin = require("webpack-cleanup-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require("path");
 const fs = require('fs');
+const fse = require('fs-extra')
 
 // https://github.com/FEDevelopers/tech.description/wiki/Webpack%EC%9D%98-%ED%98%BC%EB%9E%80%EC%8A%A4%EB%9F%B0-%EC%82%AC%ED%95%AD%EB%93%A4
 const config = {
@@ -171,15 +173,18 @@ async function injectConfig() {
   return config;
 }
 
-module.exports = (env, argv) => {
-  return new Promise(async (resolve, reject) => {
-    const injected = await injectConfig();
+module.exports = async (env, argv) => {
+  const injected = await injectConfig();
+  if (argv.mode === 'production') {
+    injected.watch = false;
+  }
 
-    if (argv.mode === 'production') {
-      injected.watch = false;
-    }
+  if (argv.copyDist > 0) {
+    injected.plugins = [...injected.plugins, new PostCompile(() => {
+      fse.copy('./dist', './');
+    })]
+  }
 
-    resolve(injected);
-    return;
-  });
+  return injected;
 }
+
