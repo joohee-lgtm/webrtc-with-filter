@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>webRTC-with-filter</title>
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"
+    />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+    <div id="container">
+      <div id="content" style="display:none">
+        <code id="current">facingMode: user</code>
+        <p><code>video</code>태그</p>
+        <video id="video" autoplay playsinline></video>
+
+        <p><code>canvas</code>태그 (거울 효과 추가)</p>
+        <canvas id="output" autoplay playsinline></canvas>
+        <div>
+          <button id="user" style="display: none">전면 카메라 열기</button>
+          <button id="environment">후면 카메라 열기</button>
+        </div>
+      </div>
+      <div>
+        <h4><code> getUserMedia </code> 을 사용 가능한 브라우저</h4>
+        <ul class="support" data-value="getusermedia"></ul>
+        <p id="ua"></p>
+      </div>
+    </div>
+    <link rel="stylesheet" href="../app.css" />
+    <script src="./index.js"></script>
+  </body>
+</html>
