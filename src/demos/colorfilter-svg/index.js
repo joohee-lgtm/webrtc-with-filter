@@ -3,7 +3,7 @@ ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
 import "../ua";
 import {
-  getUserMediaPromise, showPermissionError, showNotSupport
+  installUserMediaAccess, showPermissionError, showNotSupport
 } from '../util';
 
 const video = document.createElement('video');
@@ -26,7 +26,7 @@ function init() {
   });
 
 
-  getUserMediaPromise({
+  installUserMediaAccess({
     audio: false,
     video: {
       facing: 'user'

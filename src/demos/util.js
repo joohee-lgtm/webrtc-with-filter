@@ -5,16 +5,20 @@ const getById = (id, tagName = "div") => {
         target = document.createElement(tagName);
         target.id = id;
         target.style.display = "none";
-        document.body.append(target);
+        document.body.prepend(target);
     }
 
     return target;
 }
 
-export const installMediaDevice = () => {
-    getUserMediaPromise()
-        .then(runDefaultSetup)
-        .catch(runDefaultErrorGuide);
+export const generateNoticeArea = (notice) => {
+    const target = document.createElement('div');
+
+    document.body.prepend(target);
+    target.innerText = notice;
+
+    return target;
+
 }
 
 export const getGuideElement = () => {
@@ -31,11 +35,25 @@ export const getGuideElement = () => {
     }
 }
 
+const guides = {
+    loading: '로딩중',
+    permission: '접근 권한 없음 <a href="https://support.google.com/chrome/answer/2693767?co=GENIE.Platform%3DDesktop&hl=en&oco=0">google chrome guide</a>',
+    not_support: 'WebRTC 지원범위 아님'
+};
+
+export const initGuideElement = () => {
+    Object.keys(guides).forEach(id => {
+        const area = document.getElementById(id);
+        if (!area) {
+            getById(id).innerHTML = guides[id];
+        }
+    });
+}
+
 export const getMediaElement = () => {
     let video = getById("video", "video");
-    let ouput = getById("output", "canvas");
+    let output = getById("output", "canvas");
     let buffer = getById("buffer", "canvas");
-
 
     return {
         video,
@@ -44,7 +62,12 @@ export const getMediaElement = () => {
     }
 }
 
-export const getUserMediaPromise = (constant = {}) => {
+export const installUserMediaAccess = () => {
+    initGuideElement();
+    return getWebRTCPromise();
+}
+
+export const getWebRTCPromise = (constant = {}) => {
     // ref) https://developer.mozilla.org/ko/docs/Web/API/MediaDevices/getUserMedia
     // Older browsers might not implement mediaDevices at all, so we set an empty object first
     if (navigator.mediaDevices === undefined) {

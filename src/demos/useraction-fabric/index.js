@@ -3,19 +3,20 @@ ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
 
 import {
-  installMediaDevice,
+  runDefaultErrorGuide,
+  runDefaultSetup,
+  installUserMediaAccess,
   getMediaElement,
 } from "../util";
-import {initFabric, getFabricCanvas, addRandomEmoji} from "./fabricEmojiService";
+import { initFabric, getFabricCanvas, addRandomEmoji } from "./fabricEmojiService";
 
-let {video, buffer, output} = getMediaElement(); 
+let { video, buffer, output } = getMediaElement();
 
 const saveButton = document.getElementById('save');
 const addButton = document.getElementById('add');
 function render() {
   const bufferContext = buffer.getContext('2d');
   const outputContext = output.getContext('2d');
-
   // 거울모드
   buffer.width = video.videoWidth;
   buffer.height = video.videoHeight;
@@ -49,14 +50,16 @@ export function saveImage() {
   a.click();
 }
 
-function canplay () {
+function canplay() {
   render();
   initFabric();
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   saveButton.addEventListener("click", saveImage);
-  addButton.addEventListener('click', () => {addRandomEmoji()});
+  addButton.addEventListener('click', () => { addRandomEmoji() });
   video.addEventListener('canplay', canplay);
-  installMediaDevice();
+  installUserMediaAccess()
+    .then(runDefaultSetup)
+    .catch(runDefaultErrorGuide);
 });

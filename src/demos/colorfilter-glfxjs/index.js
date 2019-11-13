@@ -1,36 +1,38 @@
 import "../ua";
 import glfx from "glfx";
 import {
-  installMediaDevice,
+  runDefaultSetup,
   getMediaElement,
+  runDefaultErrorGuide,
+  installUserMediaAccess
 } from "../util";
-let {video, buffer, output} = getMediaElement();
+let { video, buffer, output } = getMediaElement();
 let glfxCanvas;
 
 function drawRectText() {
-  const outputContext =  output.getContext('2d');
+  const outputContext = output.getContext('2d');
   const text = "WebGL & WebRTC";
   const textWidth = outputContext.measureText(text).width;
 
   outputContext.font = "900 30pt sans-serif";
   outputContext.fillStyle = "#fff";
   outputContext.textAlign = "center";
-  outputContext.textBaseline="middle";
-  outputContext.fillText(text,buffer.width/2,buffer.height/2);
+  outputContext.textBaseline = "middle";
+  outputContext.fillText(text, buffer.width / 2, buffer.height / 2);
   outputContext.lineWidth = 10;
-  outputContext.strokeStyle = "#fff";  
+  outputContext.strokeStyle = "#fff";
   outputContext.beginPath();
   outputContext.rect(
-    buffer.width/2-textWidth/2-30,
-    buffer.height/2-50,
-    textWidth+60,
+    buffer.width / 2 - textWidth / 2 - 30,
+    buffer.height / 2 - 50,
+    textWidth + 60,
     100
   );
   outputContext.stroke();
 }
 
 function drawFilter() {
-  const outputContext =  output.getContext('2d');
+  const outputContext = output.getContext('2d');
   const videoTexture = glfxCanvas.texture(buffer);
 
   glfxCanvas.draw(videoTexture).hexagonalPixelate(320, 239.5, 20).update();
@@ -39,7 +41,7 @@ function drawFilter() {
 
 function render() {
   const bufferContext = buffer.getContext('2d');
-  
+
   // 거울모드
   buffer.width = video.videoWidth;
   buffer.height = video.videoHeight;
@@ -58,10 +60,12 @@ function canplay() {
   glfxCanvas = glfx.canvas();
 
   render();
-  
+
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   video.addEventListener('canplay', canplay);
-  installMediaDevice();
+  installUserMediaAccess()
+    .then(runDefaultSetup)
+    .catch(runDefaultErrorGuide);
 });

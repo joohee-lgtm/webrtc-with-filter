@@ -1,6 +1,6 @@
 import "../ua";
 import { 
-  getUserMediaPromise, showPermissionError,
+  installUserMediaAccess, showPermissionError,
 } from '../util';  
 
 const video = document.getElementById('video');
@@ -11,7 +11,7 @@ let glslCanvas, text;
 let fragColor = `gl_FragColor = vec4(color, 1.0);`;
 
 function init() {
-  getUserMediaPromise({
+  installUserMediaAccess({
     audio: false,
     video: {
       facing: 'user'

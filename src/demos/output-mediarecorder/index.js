@@ -1,11 +1,13 @@
 import "../ua";
 import {
-  installMediaDevice,
+  runDefaultErrorGuide,
+  runDefaultSetup,
+  installUserMediaAccess,
   getMediaElement,
   showNotSupport
 } from '../util';
 
-let {video, buffer, output} = getMediaElement();
+let { video, buffer, output } = getMediaElement();
 const icon = document.getElementById('icon');
 const picka = document.getElementById('picka');
 const canvasRecordButton = document.querySelector('button[data-value="canvasstream"]');
@@ -27,26 +29,26 @@ function showVideoLink(url, size) {
 
 function render() {
   const bufferContext = buffer.getContext('2d');
-  const outputContext =  output.getContext('2d');
-  
+  const outputContext = output.getContext('2d');
+
   // 거울모드
   buffer.width = video.videoWidth;
   buffer.height = video.videoHeight;
   bufferContext.translate(video.videoWidth, 0);
   bufferContext.scale(-1, 1);
   bufferContext.drawImage(video, 0, 0);
-  
+
   // 화면 그리기
-  outputContext.drawImage(buffer,0,0);
+  outputContext.drawImage(buffer, 0, 0);
   outputContext.drawImage(icon, 0, output.height - icon.height);
-  
+
   window.requestAnimationFrame(render);
 };
 
 function canplay() {
-  gifler(picka.src).frames('canvas#icon', function(iconContext, frame){
-    iconContext.canvas.width = parseInt(picka.naturalWidth*0.6, 10);
-    iconContext.canvas.height = parseInt(picka.naturalHeight*0.6, 10);
+  gifler(picka.src).frames('canvas#icon', function (iconContext, frame) {
+    iconContext.canvas.width = parseInt(picka.naturalWidth * 0.6, 10);
+    iconContext.canvas.height = parseInt(picka.naturalHeight * 0.6, 10);
     iconContext.drawImage(frame.buffer, 0, 0, iconContext.canvas.width, iconContext.canvas.height);
   });
   render();
@@ -85,7 +87,7 @@ function togglePreview(blobURL) {
   const prev = document.getElementById("preview");
   const video = prev.querySelector("video");
 
-  if(blobURL)  {
+  if (blobURL) {
     prev.style.display = "block";
     video.src = blobURL;
     video.play();
@@ -104,29 +106,31 @@ function record(stream) {
     // mimeType : 'video/mp4'
   });
   window.mr = mediaRecorder;
-  mediaRecorder.addEventListener("dataavailable", function(e) {
+  mediaRecorder.addEventListener("dataavailable", function (e) {
     chunks.push(e.data);
   });
-  mediaRecorder.addEventListener("stop", function(){
+  mediaRecorder.addEventListener("stop", function () {
     const recordedVideo = document.createElement('video');
-    const blob = new Blob(chunks, { 'type' : 'video/webm' });
+    const blob = new Blob(chunks, { 'type': 'video/webm' });
     const blobURL = URL.createObjectURL(blob);
     recordedVideo.src = blobURL;
     chunks = [];
-    
+
     togglePreview(blobURL);
   });
   mediaRecorder.start();
 }
 
-document.addEventListener("DOMContentLoaded", function(){
-  if(!window.MediaRecorder) {
+document.addEventListener("DOMContentLoaded", function () {
+  if (!window.MediaRecorder) {
     showNotSupport();
-    return ;
+    return;
   }
   canvasStream = output.captureStream();
   videoStream = video.captureStream();
-  installMediaDevice();
+  installUserMediaAccess()
+    .then(runDefaultSetup)
+    .catch(runDefaultErrorGuide);
   video.addEventListener('canplay', canplay);
   canvasRecordButton.addEventListener('click', canvasRecordButtonClickHandler);
   videoRecordButton.addEventListener('click', videoRecordButtonClickHandler);

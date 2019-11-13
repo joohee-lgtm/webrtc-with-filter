@@ -11,7 +11,7 @@
 
 // requestAnimationFrame 관련 이슈 https://github.com/eduardolundgren/tracking.js/issues/182
 import {
-  getUserMediaPromise, showNotSupport,
+  installUserMediaAccess, showNotSupport, runDefaultErrorGuide,
 } from '../util';
 import throttle from "lodash.throttle";
 
@@ -39,7 +39,7 @@ function trackHandler(event) {
   });
 }
 
-function initTraker() {
+function initTracker() {
   const video = document.getElementById('video');
   const canvas = document.getElementById('canvas');
   const context = canvas.getContext('2d');
@@ -60,7 +60,7 @@ function initTraker() {
 }
 
 window.onload = function () {
-  getUserMediaPromise()
-  .then(initTraker)
-  .catch(showNotSupport)
+  installUserMediaAccess()
+    .then(initTracker)
+    .catch(runDefaultErrorGuide)
 };

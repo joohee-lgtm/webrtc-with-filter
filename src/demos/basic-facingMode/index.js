@@ -1,19 +1,19 @@
 import "../ua";
-import { 
+import {
     showPermissionError,
-    getUserMediaPromise,
     getMediaElement,
     showContentBlock,
+    installUserMediaAccess
 } from '../util';
 let output;
 
 function handleSuccess(stream) {
-    const {video, output: o} = getMediaElement();
+    const { video, output: o } = getMediaElement();
 
     showContentBlock();
     output = o;
     video.srcObject = stream;
-    video.oncanplay = function() {
+    video.oncanplay = function () {
         showContentBlock();
         render();
     };
@@ -26,25 +26,25 @@ function handleReject() {
 
 function render() {
     const outputContext = output.getContext("2d");
-    
+
     output.width = video.videoWidth;
     output.height = video.videoHeight;
     outputContext.translate(video.videoWidth, 0);
-    outputContext.scale(-1, 1);  
-    outputContext.drawImage(video, 0,0);
+    outputContext.scale(-1, 1);
+    outputContext.drawImage(video, 0, 0);
 
     requestAnimationFrame(render);
 }
 
 function accessToCamera(e) {
-    getUserMediaPromise({
+    installUserMediaAccess({
         audio: false,
         video: {
             facingMode: e.target.id,
         }
     })
-    .then(handleSuccess)
-    .catch(handleReject);
+        .then(handleSuccess)
+        .catch(handleReject);
 
     document.querySelector('#user').style.display = "";
     document.querySelector('#environment').style.display = "";
@@ -52,7 +52,7 @@ function accessToCamera(e) {
     document.getElementById("current").innerHTML = `facingMode: ${e.target.id}`;
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     accessToCamera({
         target: document.querySelector('#user')
     });

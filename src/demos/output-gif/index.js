@@ -3,7 +3,7 @@ ref) https://sudo.isl.co/webrtc-real-time-image-filtering/
 */
 import "../ua";
 import { 
-  getUserMediaPromise, showPermissionError, notSupportWebm,
+  installUserMediaAccess, showPermissionError, notSupportWebm,
 } from '../util';
 
 import GIF from "gif.js";
@@ -21,7 +21,7 @@ const icon = document.getElementById('icon');
 const picka = document.getElementById('picka');
 
 function init() {
-  getUserMediaPromise()
+  installUserMediaAccess()
   .then(setup)
   .catch(showPermissionError);
 }
